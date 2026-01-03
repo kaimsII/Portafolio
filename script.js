@@ -65,37 +65,25 @@ function updateActiveNavLink() {
 window.addEventListener('scroll', updateActiveNavLink);
 
 // ===================================
-// Cursor Glow Effect (Optional)
+// Mouse Spotlight Effect
 // ===================================
-let mouseX = 0;
-let mouseY = 0;
-let cursorX = 0;
-let cursorY = 0;
-
 document.addEventListener('mousemove', (e) => {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
+    const x = (e.clientX / window.innerWidth) * 100;
+    const y = (e.clientY / window.innerHeight) * 100;
+    
+    document.body.style.setProperty('--mouse-x', `${x}%`);
+    document.body.style.setProperty('--mouse-y', `${y}%`);
+    
+    // Add class to show the effect
+    document.body.classList.add('mouse-moved');
 });
 
-function updateCursor() {
-    const diffX = mouseX - cursorX;
-    const diffY = mouseY - cursorY;
-    
-    cursorX += diffX * 0.1;
-    cursorY += diffY * 0.1;
-    
-    // Create subtle glow effect at cursor position
-    const glow = document.querySelector('.cursor-glow');
-    if (glow) {
-        glow.style.left = cursorX + 'px';
-        glow.style.top = cursorY + 'px';
-    }
-    
-    requestAnimationFrame(updateCursor);
-}
+// Hide effect when mouse leaves the window
+document.addEventListener('mouseleave', () => {
+    document.body.classList.remove('mouse-moved');
+});
 
-// Uncomment to enable cursor glow effect
-// updateCursor();
+
 
 // ===================================
 // Parallax Effect on Scroll (Subtle)

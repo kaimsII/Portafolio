@@ -3,10 +3,10 @@
    =================================== */
 :root {
     /* Colors */
-    --navy: #0a192f;
-    --light-navy: #112240;
-    --lightest-navy: #233554;
-    --navy-shadow: rgba(2, 12, 27, 0.7);
+    --navy: #0f172a;
+    --light-navy: #1e293b;
+    --lightest-navy: #334155;
+    --navy-shadow: rgba(15, 23, 42, 0.7);
     --dark-slate: #495670;
     --slate: #8892b0;
     --light-slate: #a8b2d1;
@@ -41,6 +41,30 @@ body {
     color: var(--slate);
     line-height: 1.6;
     overflow-x: hidden;
+    position: relative;
+}
+
+/* Mouse spotlight effect */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    background: radial-gradient(
+        720px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+        rgba(100, 255, 218, 0.064),
+        transparent 50%
+    );
+    z-index: 9999;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+body.mouse-moved::before {
+    opacity: 1;
 }
 
 /* Custom Scrollbar */
@@ -82,11 +106,12 @@ body {
    =================================== */
 .container {
     display: flex;
+    justify-content: space-between;
     min-height: 100vh;
-    max-width: 1600px;
+    max-width: 1200px;
     margin: 0 auto;
-    padding: 0 100px;
-    gap: 100px;
+    padding: 0 50px;
+    gap: 80px;
 }
 
 /* ===================================
@@ -95,13 +120,13 @@ body {
 .left-column {
     position: sticky;
     top: 0;
-    width: 50%;
-    max-width: 600px;
+    width: 40%;
+    max-width: 500px;
     height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 100px 0 50px 0;
+    padding: 80px 0;
 }
 
 .hero-left {
@@ -166,13 +191,15 @@ body {
 .nav-link:hover .nav-line,
 .nav-link.active .nav-line {
     width: 64px;
+    opacity: 1;
     background-color: var(--lightest-slate);
 }
 
 .nav-line {
-    width: 32px;
+    width: 0;
     height: 1px;
     background-color: var(--dark-slate);
+    opacity: 0;
     transition: var(--transition);
 }
 
@@ -207,14 +234,14 @@ body {
    =================================== */
 .right-column {
     width: 50%;
-    padding: 100px 0;
+    padding: 80px 0;
 }
 
 /* ===================================
    Sections
    =================================== */
 .section {
-    padding: 60px 0;
+    padding: 8rem 0;
     opacity: 0;
     transform: translateY(30px);
     transition: opacity 0.6s ease, transform 0.6s ease;
@@ -253,9 +280,10 @@ body {
 }
 
 .about-text p {
-    margin-bottom: 15px;
+    margin-bottom: 40px;
     color: var(--slate);
     font-size: 16px;
+    line-height: 1.6;
 }
 
 .inline-link {
@@ -347,7 +375,7 @@ body {
 .experience-content {
     display: flex;
     flex-direction: column;
-    gap: 48px;
+    gap: 80px;
 }
 
 .job {
@@ -468,7 +496,7 @@ body {
 .projects-grid {
     display: flex;
     flex-direction: column;
-    gap: 60px;
+    gap: 100px;
 }
 
 .project-card {
@@ -684,15 +712,16 @@ body {
    =================================== */
 @media (max-width: 1280px) {
     .container {
-        padding: 0 40px;
+        padding: 6rem 40px;
+        gap: 80px;
     }
     
     .left-column {
-        padding: 80px 40px 40px 0;
+        padding: 80px 0 40px 0;
     }
     
     .right-column {
-        padding: 80px 0 80px 40px;
+        padding: 80px 0;
     }
 }
 
@@ -716,11 +745,11 @@ body {
     }
     
     .section {
-        padding: 60px 0;
+        padding: 6rem 0;
     }
     
     .section:first-child {
-        padding-top: 60px;
+        padding-top: 6rem;
     }
 }
 
