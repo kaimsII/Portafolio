@@ -1,0 +1,197 @@
+:root {
+    --bg-main: #0d1117;
+    --bg-panel: #161b22;
+    --code-bg: #0d1117;
+    /* VS Code dark like */
+    --border: #30363d;
+    --accent: #58a6ff;
+    --text-main: #c9d1d9;
+    --text-dim: #8b949e;
+
+    /* Syntax Highlight Colors */
+    --syn-kw: #ff7b72;
+    /* Keyword - Red/Pink */
+    --syn-fn: #d2a8ff;
+    /* Function - Purple */
+    --syn-str: #a5d6ff;
+    /* String - Light Blue */
+    --syn-num: #79c0ff;
+    /* Number - Blue */
+    --syn-cls: #f0883e;
+    /* Class - Orange */
+    --syn-co: #8b949e;
+    /* Comment - Grey */
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+}
+
+header {
+    text-align: center;
+    padding: 3rem 0;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 2rem;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--accent);
+}
+
+.subtitle {
+    color: var(--text-dim);
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+/* Split View Definition */
+.split-view {
+    display: flex;
+    height: 80vh;
+    /* Viewport height dependent */
+    min-height: 500px;
+    margin-bottom: 4rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--bg-panel);
+}
+
+.code-panel {
+    width: 45%;
+    background: var(--code-bg);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+}
+
+.file-tab {
+    background: #161b22;
+    padding: 8px 16px;
+    font-family: 'Fira Code', monospace;
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    border-bottom: 1px solid var(--border);
+}
+
+pre {
+    padding: 1.5rem;
+    overflow: auto;
+    flex: 1;
+}
+
+code {
+    font-family: 'Fira Code', monospace;
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+/* Syntax Highlighting Classes */
+.kw {
+    color: var(--syn-kw);
+}
+
+.fn {
+    color: var(--syn-fn);
+}
+
+.str {
+    color: var(--syn-str);
+}
+
+.num {
+    color: var(--syn-num);
+}
+
+.cl {
+    color: var(--syn-cls);
+}
+
+.co {
+    color: var(--syn-co);
+    font-style: italic;
+}
+
+.visual-panel {
+    width: 55%;
+    position: relative;
+    background: #0d1117;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.viz-label {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    background: rgba(0, 0, 0, 0.5);
+    padding: 4px 8px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+}
+
+canvas {
+    width: 100%;
+    height: 100%;
+}
+
+.overlay-stat {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    background: rgba(35, 134, 54, 0.1);
+    color: #3fb950;
+    border: 1px solid #238636;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-family: 'Fira Code', monospace;
+    font-size: 0.9rem;
+}
+
+footer {
+    text-align: center;
+    padding: 2rem;
+    color: var(--text-dim);
+    font-size: 0.8rem;
+    border-top: 1px solid var(--border);
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .split-view {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .code-panel,
+    .visual-panel {
+        width: 100%;
+        height: 400px;
+    }
+
+    .code-panel {
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+    }
+}

@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clasificador Visual de Tipos de Datos Python</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: #0d1117;
+            /* Fondo oscuro acorde al tema */
+            color: #fff;
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            /* Centrado vertical */
+            padding: 20px;
+            overflow: hidden;
+            /* Sin scroll interno */
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2vh;
+            border: 1px solid #4ecca3;
+            padding: 1.5vh 2vw;
+            border-radius: 8px;
+            background: rgba(78, 204, 163, 0.05);
+            width: 90%;
+            max-width: 600px;
+        }
+
+        .header h1 {
+            color: #4ecca3;
+            font-size: clamp(14px, 2.5vh, 18px);
+            /* Texto escalable */
+            margin: 0;
+            white-space: nowrap;
+        }
+
+        .status {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 1.5vh;
+            border-radius: 6px;
+            margin-bottom: 2vh;
+            text-align: center;
+            height: 8vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: clamp(14px, 2.5vh, 18px);
+            color: #4ecca3;
+            border: 1px solid #333;
+            width: 90%;
+            max-width: 600px;
+        }
+
+        .animation-area {
+            position: relative;
+            width: 90%;
+            max-width: 600px;
+            flex-grow: 1;
+            /* Ocupar espacio disponible */
+            max-height: 40vh;
+            /* Limitar altura */
+            margin-bottom: 2vh;
+            /* border: 1px dashed #333; Visual guide optimized removed */
+        }
+
+        .dato-animado {
+            position: absolute;
+            background: #ffd93d;
+            color: #000;
+            padding: 0.8vh 1.5vw;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: clamp(12px, 2vh, 16px);
+            box-shadow: 0 4px 15px rgba(255, 217, 61, 0.4);
+            z-index: 10;
+            white-space: pre;
+            text-align: center;
+            transform-origin: center;
+        }
+
+        .cajas-contenedor {
+            display: flex;
+            justify-content: space-between;
+            gap: 1vw;
+            width: 90%;
+            max-width: 700px;
+            padding: 2vh;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            border: 1px solid #4ecca3;
+            margin-bottom: 1vh;
+        }
+
+        .caja {
+            flex: 1;
+            text-align: center;
+            padding: 1.5vh 0.5vw;
+            border: 1px solid #666;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.03);
+            font-size: clamp(10px, 1.8vh, 12px);
+            font-weight: bold;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .caja.activo {
+            border-color: #fff;
+            background: rgba(255, 255, 255, 0.1);
+            transform: scale(1.05);
+        }
+
+        /* Colores específicos tipos */
+        .caja-int {
+            color: #ff6b6b;
+            border-color: #ff6b6b;
+        }
+
+        .caja-str {
+            color: #4ecdc4;
+            border-color: #4ecdc4;
+        }
+
+        .caja-float {
+            color: #ffe66d;
+            border-color: #ffe66d;
+        }
+
+        .caja-bool {
+            color: #a8e6cf;
+            border-color: #a8e6cf;
+        }
+
+        .caja-list {
+            color: #ffa07a;
+            border-color: #ffa07a;
+        }
+
+        .contador {
+            padding: 1vh;
+            text-align: center;
+            color: #666;
+            font-size: 12px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <h1>PROCESADOR VISUAL DE DATOS (PYTHON)</h1>
+        <h1>══════════════════════════════</h1>
+    </div>
+
+    <div class="status" id="status">Iniciando sistema...</div>
+
+    <div class="animation-area" id="animationArea"></div>
+
+    <div class="cajas-contenedor">
+        <div class="caja caja-int" id="caja-int">[ ENTERO ]<br>(int)</div>
+        <div class="caja caja-str" id="caja-str">[ CADENA ]<br>(str)</div>
+        <div class="caja caja-float" id="caja-float">[ FLOTANTE ]<br>(float)</div>
+        <div class="caja caja-bool" id="caja-bool">[ BOOLEANO ]<br>(bool)</div>
+        <div class="caja caja-list" id="caja-list">[ LISTA ]<br>(list)</div>
+    </div>
+
+    <div class="contador" id="contador">Datos procesados: 0 / 10</div>
+
+    <script>
+        // =========================
+        // CONFIGURACIÓN DE DATOS
+        // =========================
+        const listaDeDatos = [
+            15,
+            "Hola",
+            9.99,
+            true,
+            [1, 2, 3],
+            42,
+            "Python",
+            false,
+            0.5,
+            [4, 5]
+        ];
+
+        const POSICIONES = {
+            'int': 0,
+            'str': 1,
+            'float': 2,
+            'bool': 3,
+            'list': 4
+        };
+
+        // =========================
+        // VARIABLES DE ESTADO
+        // =========================
+        let indiceActual = 0;
+        let animacionEnCurso = false;
+        let tiposVistos = new Set();
+
+        // =========================
+        // UTILIDADES
+        // =========================
+        function getTipoDato(dato) {
+            if (Array.isArray(dato)) return 'list';
+            if (typeof dato === 'boolean') return 'bool';
+            if (typeof dato === 'string') return 'str';
+            if (typeof dato === 'number') {
+                return Number.isInteger(dato) ? 'int' : 'float';
+            }
+            return 'unknown';
+        }
+
+        function formatearDato(dato) {
+            if (Array.isArray(dato)) return `[${dato.join(', ')}]`;
+            if (typeof dato === 'string') return `"${dato}"`;
+            return String(dato);
+        }
+
+        function actualizarEstado(mensaje) {
+            document.getElementById('status').textContent = mensaje;
+        }
+
+        function actualizarContador() {
+            document.getElementById('contador').textContent =
+                `Datos procesados: ${indiceActual} / ${listaDeDatos.length}`;
+        }
+
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        // =========================
+        // LÓGICA DE ANIMACIÓN
+        // =========================
+        async function animarDato(dato, tipo) {
+            const area = document.getElementById('animationArea');
+            area.innerHTML = ''; // Limpiar área
+
+            const esPrimeraVez = !tiposVistos.has(tipo);
+            tiposVistos.add(tipo);
+
+            // Crear elemento visual
+            const datoElement = document.createElement('div');
+            datoElement.className = 'dato-animado';
+
+            // MODIFICACIÓN: Sin paréntesis
+            datoElement.textContent = formatearDato(dato);
+
+            area.appendChild(datoElement);
+
+            // -- ESTADO 1: APARICIÓN --
+            actualizarEstado('Dato detectado...');
+            datoElement.style.left = '50%';
+            datoElement.style.transform = 'translateX(-50%)'; // Centrado inicial
+            datoElement.style.top = '0px';
+            await sleep(1000);
+
+            // Cálculos de geometría para destino
+            const cajas = document.querySelector('.cajas-contenedor');
+            const cajasRect = cajas.getBoundingClientRect();
+            const areaRect = area.getBoundingClientRect();
+
+            // Ancho de una caja individual (son 5 cajas)
+            const anchoCaja = cajasRect.width / 5;
+
+            // Posición destino relativa al contenedor de animación
+            const objetivoX = (POSICIONES[tipo] * anchoCaja) + (anchoCaja / 2);
+
+            // -- ESTADO 2: DESPLAZAMIENTO HORIZONTAL --
+            if (esPrimeraVez) {
+                actualizarEstado('Ubicando tipo por primera vez...');
+
+                const startX = areaRect.width / 2; // Centro
+                const steps = 30;
+
+                datoElement.style.transform = 'none';
+
+                for (let i = 0; i <= steps; i++) {
+                    const currentX = startX + ((objetivoX - startX) * (i / steps));
+                    datoElement.style.left = `${currentX - 40}px`;
+                    await sleep(20);
+                }
+            } else {
+                datoElement.style.transform = 'none';
+                datoElement.style.left = `${objetivoX - 40}px`;
+            }
+
+            // -- ESTADO 3: CAÍDA --
+            actualizarEstado('Clasificando...');
+            const alturaFinal = 240;
+            const pasosCaida = 25;
+
+            for (let i = 0; i <= pasosCaida; i++) {
+                datoElement.style.top = `${(alturaFinal / pasosCaida) * i}px`;
+
+                const flechas = '↓'.repeat(Math.floor(i / 5) + 1);
+
+                // MODIFICACIÓN: Sin paréntesis
+                datoElement.textContent = `${flechas}\n${formatearDato(dato)}`;
+
+                await sleep(40);
+            }
+
+            // -- ESTADO 4: CONFIRMACIÓN --
+            const cajaDestino = document.getElementById(`caja-${tipo}`);
+            cajaDestino.classList.add('activo');
+            actualizarEstado(`✓ Clasificado: ${tipo.toUpperCase()}`);
+
+            await sleep(1000);
+
+            cajaDestino.classList.remove('activo');
+            area.innerHTML = '';
+        }
+
+        // =========================
+        // BUCLE PRINCIPAL
+        // =========================
+        async function iniciarSimulacion() {
+            if (animacionEnCurso) return;
+            animacionEnCurso = true;
+
+            while (true) {
+                indiceActual = 0;
+                actualizarContador();
+                tiposVistos.clear();
+
+                while (indiceActual < listaDeDatos.length) {
+                    const dato = listaDeDatos[indiceActual];
+                    const tipo = getTipoDato(dato);
+
+                    await animarDato(dato, tipo);
+
+                    indiceActual++;
+                    actualizarContador();
+                    await sleep(500);
+                }
+
+                actualizarEstado('¡Ciclo completado! Reiniciando... 🔄');
+                await sleep(3000);
+            }
+        }
+
+        // Arranque automático
+        window.addEventListener('load', () => {
+            setTimeout(() => iniciarSimulacion(), 500);
+        });
+
+    </script>
+</body>
+
+</html>

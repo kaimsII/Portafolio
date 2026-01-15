@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Capítulo 5: Datos Complejos</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Fira+Code:wght@400&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+
+    <header>
+        <h1>Demo 5: Extracción de Conocimiento</h1>
+        <p class="subtitle">Texto • Grafos • Probabilidad • Tiempo</p>
+    </header>
+
+    <main>
+        <!-- 5.1 Text Mining -->
+        <section id="section-text" class="visual-section">
+            <div class="info-panel">
+                <h2>5.1 Minería de Texto</h2>
+                <p class="desc"><strong>Paso 1: Entender el Lenguaje.</strong><br>El mundo está lleno de textos
+                    (correos, tuits, documentos). Para que una IA los entienda, primero debemos limpiarlos y
+                    convertirlos en "fichas" contables.</p>
+                <div class="tech-card">
+                    <p><strong>El Reto:</strong> El texto es caótico y ruidoso.</p>
+                    <p><strong>La Solución:</strong> "Limpiamos" lo inútil y nos quedamos con las palabras clave.</p>
+                </div>
+            </div>
+            <div class="canvas-container" id="text-flow-container">
+                <!-- Javascript fills this -->
+            </div>
+        </section>
+
+        <!-- Connector 1 -->
+        <div class="narrative-connector">
+            <div class="connector-line top"></div>
+            <div class="connector-box">
+                <p>Ya tenemos las palabras clave, pero...<br>¿Qué pasa cuando los datos <strong>se conectan entre
+                        sí</strong>?</p>
+            </div>
+            <div class="connector-line bottom"></div>
+        </div>
+
+        <!-- 5.2 Graphs -->
+        <section id="section-graphs" class="visual-section">
+            <div class="info-panel">
+                <h2>5.2 Análisis de Grafos</h2>
+                <p class="desc"><strong>Paso 2: Mapear Relaciones.</strong><br>Las palabras, personas o páginas web no
+                    están solas. Forman redes. Aquí analizamos quién es "influencer" (nodo central) y cómo fluye la
+                    información.</p>
+                <div class="tech-card">
+                    <p><strong>El Reto:</strong> Entender la estructura oculta de la red.</p>
+                    <p><strong>La Solución:</strong> Medir quién tiene más conexiones (Centralidad).</p>
+                </div>
+                <div class="controls">
+                    <button class="btn small" onclick="graphDemo.toggleDirect()">Cambiar dirección</button>
+                    <button class="btn small" onclick="graphDemo.findCentral()">Detectar Nodos Clave</button>
+                </div>
+            </div>
+            <div class="canvas-container">
+                <canvas id="graphCanvas"></canvas>
+            </div>
+        </section>
+
+        <!-- Connector 2 -->
+        <div class="narrative-connector">
+            <div class="connector-line top"></div>
+            <div class="connector-box">
+                <p>Entendemos la estructura, pero...<br>¿Cómo tomamos decisiones cuando <strong>hay
+                        incertidumbre</strong>?</p>
+            </div>
+            <div class="connector-line bottom"></div>
+        </div>
+
+        <!-- 5.3 Naive Bayes -->
+        <section id="section-bayes" class="visual-section">
+            <div class="info-panel">
+                <h2>5.3 Probabilidad (Naive Bayes)</h2>
+                <p class="desc"><strong>Paso 3: Decidiendo con Pistas.</strong><br>
+                    Imagina que eres un detective. No sabes si un correo es <strong>Spam</strong> o
+                    <strong>Seguro</strong>, así que buscas pistas (palabras).<br><br>
+                    Cada palabra es una "evidencia" que empuja la balanza hacia un lado u otro.
+                </p>
+                <div class="tech-card">
+                    <p><strong>Ejemplo:</strong> Correo sospechoso.</p>
+                    <p><strong>Pista:</strong> "Ganar" → <span style="color: var(--accent-pink)">+Spam</span></p>
+                    <p><strong>Pista:</strong> "Proyecto" → <span style="color: var(--accent-green)">+Seguro</span></p>
+                    <p><strong>Resultado:</strong> Combina todas las pistas para decidir.</p>
+                </div>
+            </div>
+            <div class="canvas-container" id="bayes-container">
+                <div class="bayes-stage">
+                    <div class="email-display" id="bayes-email-display">Analizando asunto...</div>
+                    <div class="scan-line"></div>
+                </div>
+
+                <div class="evidence-area" id="bayes-evidence">
+                    <div class="evidence-msg">Esperando palabras clave...</div>
+                </div>
+
+                <div class="result-scales">
+                    <div class="scale-container">
+                        <div class="scale-bar-bg">
+                            <div class="scale-bar-fill spam" id="bar-spam"></div>
+                        </div>
+                        <div class="scale-label">PROBABILIDAD SPAM</div>
+                        <div class="scale-value" id="val-spam">50%</div>
+                    </div>
+
+                    <div class="scale-container">
+                        <div class="scale-bar-bg">
+                            <div class="scale-bar-fill ham" id="bar-ham"></div>
+                        </div>
+                        <div class="scale-label">PROBABILIDAD SEGURO</div>
+                        <div class="scale-value" id="val-ham">50%</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Connector 3 -->
+        <div class="narrative-connector">
+            <div class="connector-line top"></div>
+            <div class="connector-box">
+                <p>Podemos clasificar el presente, pero...<br>¿Podemos <strong>predecir el futuro</strong>?</p>
+            </div>
+            <div class="connector-line bottom"></div>
+        </div>
+
+        <!-- 5.4 Time Series -->
+        <section id="section-time" class="visual-section">
+            <div class="info-panel">
+                <h2>5.4 Series Temporales</h2>
+                <p class="desc"><strong>Paso 4: Ver el Futuro.</strong><br>
+                    Los datos reales (ventas, clima) son ruidosos y caóticos. Para predecir el futuro, no podemos seguir
+                    el caos.<br><br>
+                    Debemos descubrir el <strong>patrón oculto</strong> (la tendencia limpia) y proyectarlo hacia
+                    adelante.</p>
+                <div class="tech-card">
+                    <p><strong>El Reto:</strong> El "Ruido" esconde la verdad.</p>
+                    <p><strong>La Solución:</strong> Ajustar una curva suave al pasado y extenderla.</p>
+                </div>
+            </div>
+            <div class="canvas-container" id="time-container">
+                <canvas id="timeCanvas"></canvas>
+                <div class="time-overlay" id="time-status-label">Esperando datos...</div>
+                <div class="time-legend">
+                    <span class="legend-item" style="color: #4cc9f0">● Datos Reales (Ruido)</span>
+                    <span class="legend-item" style="color: #f72585">● Patrón Detectado</span>
+                    <span class="legend-item" style="color: #ffd166; font-weight:bold;">● Predicción</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="final-cta">
+            <h2>Ciclo Completo de Datos</h2>
+            <p>Desde transformar texto hasta predecir el futuro, hemos recorrido el camino de la extracción de
+                conocimiento.</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>Demo Capítulo 5 - Deep Learning Portfolio</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

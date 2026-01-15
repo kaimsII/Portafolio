@@ -1,0 +1,207 @@
+:root {
+    --bg-main: #020617;
+    --bg-card: #0f172a;
+    --bg-card-hover: #1e293b;
+    --border-color: #334155;
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --accent-blue: #3b82f6;
+    --accent-purple: #8b5cf6;
+    --accent-cyan: #06b6d4;
+    --accent-pink: #ec4899;
+    --accent-orange: #f97316;
+    --font-heading: 'Inter', system-ui, sans-serif;
+    --font-body: 'Inter', system-ui, sans-serif;
+    --font-mono: 'Fira Code', monospace;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* --- Layout --- */
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+}
+
+/* --- Header --- */
+.course-header {
+    text-align: center;
+    margin-bottom: 5rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.course-header h1 {
+    font-size: 3rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 1rem;
+    background: linear-gradient(to right, #ffffff, #94a3b8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.course-header .subtitle {
+    font-size: 1.25rem;
+    color: var(--text-secondary);
+}
+
+/* --- Course Grid --- */
+.curriculum-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+/* --- Module Card --- */
+.module-card {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    /* Fixed width for number column */
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    min-height: 200px;
+}
+
+.module-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--accent-color);
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+    background-color: var(--bg-card-hover);
+}
+
+/* Number Column */
+.module-number-col {
+    background-color: rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 2rem;
+    border-right: 1px solid var(--border-color);
+}
+
+.module-number {
+    font-family: var(--font-mono);
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+    opacity: 0.5;
+}
+
+.module-card:hover .module-number {
+    color: var(--accent-color);
+    opacity: 1;
+}
+
+/* Content Area */
+.module-content {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Content Header */
+.module-header {
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    padding-bottom: 1rem;
+}
+
+.module-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: white;
+}
+
+.module-desc {
+    color: var(--text-secondary);
+    font-size: 1rem;
+}
+
+/* Topics List */
+.topics-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    list-style: none;
+}
+
+.topic-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    transition: color 0.2s;
+}
+
+.module-card:hover .topic-item {
+    color: var(--text-primary);
+}
+
+.topic-bullet {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: var(--border-color);
+    flex-shrink: 0;
+    transition: background-color 0.2s;
+}
+
+.module-card:hover .topic-bullet {
+    background-color: var(--accent-color);
+    box-shadow: 0 0 8px var(--accent-color);
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+    .module-card {
+        grid-template-columns: 1fr;
+        /* Stack vertically on small screens */
+    }
+
+    .module-number-col {
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        padding: 1rem 2rem;
+        border-right: none;
+        border-bottom: 1px solid var(--border-color);
+        gap: 1rem;
+    }
+
+    .module-number {
+        font-size: 1.25rem;
+    }
+
+    .module-number::after {
+        content: "MÓDULO";
+        font-size: 0.8rem;
+        margin-left: 0.5rem;
+        opacity: 0.7;
+        font-weight: 400;
+    }
+
+    .course-header h1 {
+        font-size: 2rem;
+    }
+}

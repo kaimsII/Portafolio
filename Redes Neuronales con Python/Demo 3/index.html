@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cómo una CN ve imágenes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=JetBrains+Mono:wght@400&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <main class="container">
+
+        <!-- INTRO -->
+        <section id="intro" class="screen center-content">
+            <h1>Demo 3: Cómo una red convolucional<br>entiende imágenes</h1>
+            <p class="subtitle">Una guía visual paso a paso</p>
+            <div class="scroll-indicator">↓ Scroll para comenzar</div>
+        </section>
+
+        <!-- 3.1 FUNDAMENTS -->
+        <section id="s3-1" class="screen">
+            <header>
+                <h2>3.1 Fundamentos de Arquitectura</h2>
+                <p>Red Conectada vs. Red Convolucional</p>
+            </header>
+
+            <div class="visual-container">
+                <div class="comparison-view">
+                    <div class="pane">
+                        <h3>Red Densa (MLP)</h3>
+                        <canvas id="canvas-dense"></canvas>
+                        <p class="caption">Cada píxel conecta con todo. <span class="bad">Ineficiente.</span></p>
+                    </div>
+                    <div class="pane">
+                        <h3>Red Convolucional (CNN)</h3>
+                        <canvas id="canvas-cnn"></canvas>
+                        <p class="caption">Conexión local (Filtros). <span class="good">Eficiente.</span></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="narrative text-box">
+                <p>Las imágenes son matrices de píxeles. Una red tradicional intenta conectar todos los píxeles, creando
+                    un caos. Una <strong>CNN</strong> usa filtros pequeños para buscar patrones locales.</p>
+            </div>
+        </section>
+
+        <!-- 3.2 CONVOLUTION -->
+        <section id="s3-2" class="screen">
+            <header>
+                <h2>3.2 La Convolución</h2>
+                <p>El núcleo de la visión artificial</p>
+            </header>
+
+            <div class="visual-container">
+                <div class="canvas-wrapper">
+                    <canvas id="canvas-conv"></canvas>
+                </div>
+            </div>
+
+            <div class="narrative text-box">
+                <p>El filtro (kernel) se desliza automáticamente sobre la imagen. Multiplica valores píxel a píxel para
+                    detectar <strong>características</strong>.</p>
+            </div>
+        </section>
+
+        <!-- 3.3 POOLING & FLATTENING -->
+        <section id="s3-3" class="screen">
+            <header>
+                <h2>3.3 Pooling & Flattening</h2>
+                <p>Reduciendo y preparando para decidir</p>
+            </header>
+
+            <div class="visual-container column-layout">
+                <div class="stage" id="pooling-stage">
+                    <div class="stage-header">
+                        <h3>Max Pooling (2x2)</h3>
+                    </div>
+                    <canvas id="canvas-pooling"></canvas>
+                </div>
+                <div class="arrow-down">↓</div>
+                <div class="stage" id="flatten-stage">
+                    <h3>Flattening</h3>
+                    <canvas id="canvas-flatten"></canvas>
+                </div>
+            </div>
+
+            <div class="narrative text-box">
+                <p><strong>Pooling:</strong> Nos quedamos con lo importante (el valor máximo) para reducir el
+                    tamaño.<br><strong>Flattening:</strong> Convertimos la matriz en una lista para la clasificación
+                    final.</p>
+            </div>
+        </section>
+
+        <!-- 3.4 CASE STUDY -->
+        <section id="s3-4" class="screen">
+            <header>
+                <h2>3.4 Caso de Estudio</h2>
+                <p>Reconociendo Patrones</p>
+            </header>
+
+            <div class="visual-container case-layout">
+                <div class="switch-label">Analizando: <span id="current-shape-label" class="highlight-text">...</span>
+                </div>
+
+                <div class="inference-pipeline">
+                    <div class="pipe-step">
+                        <span>Entrada</span>
+                        <canvas id="canvas-case-input" width="60" height="60"></canvas>
+                    </div>
+                    <div class="pipe-arrow">→</div>
+                    <div class="pipe-step">
+                        <span>Filtros Activos</span>
+                        <canvas id="canvas-case-filters" width="100" height="60"></canvas>
+                    </div>
+                    <div class="pipe-arrow">→</div>
+                    <div class="pipe-step result-box">
+                        <span>Predicción</span>
+                        <div id="prediction-output">
+                            <!-- Bars added via JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="narrative text-box">
+                <p>La red detecta características específicas (líneas, curvas) para identificar la forma con alta
+                    confianza.</p>
+            </div>
+
+            <button id="btn-restart" class="btn-final">Ver todo de nuevo</button>
+        </section>
+
+    </main>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

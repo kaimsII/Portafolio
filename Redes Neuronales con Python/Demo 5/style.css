@@ -1,0 +1,655 @@
+:root {
+    --bg-color: #0f0f13;
+    --card-bg: #1a1a24;
+    --text-primary: #e0e0e0;
+    --text-secondary: #a0a0b0;
+    --accent-blue: #4cc9f0;
+    --accent-purple: #7209b7;
+    --accent-pink: #f72585;
+    --accent-green: #4ade80;
+    --font-main: 'Inter', sans-serif;
+    --font-mono: 'Fira Code', monospace;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    font-family: var(--font-main);
+    overflow-x: hidden;
+    line-height: 1.6;
+}
+
+header {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: radial-gradient(circle at center, #1b1b2a 0%, var(--bg-color) 70%);
+}
+
+h1 {
+    font-size: 3.5rem;
+    font-weight: 800;
+    background: linear-gradient(to right, var(--accent-blue), var(--accent-pink));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 1rem;
+}
+
+.subtitle {
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+/* Sections */
+main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.visual-section {
+    min-height: 80vh;
+    /* Reduced from 100vh to allow flow */
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    margin-bottom: 0;
+    /* Handled by connectors */
+    padding: 50px 0;
+}
+
+.visual-section:nth-child(even) {
+    flex-direction: row-reverse;
+}
+
+/* Connectors */
+.narrative-connector {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 0;
+    position: relative;
+    opacity: 0.8;
+}
+
+.connector-line {
+    width: 2px;
+    height: 50px;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.1), var(--accent-blue));
+}
+
+.connector-line.bottom {
+    background: linear-gradient(to top, rgba(255, 255, 255, 0.1), var(--accent-blue));
+}
+
+.connector-box {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(76, 201, 240, 0.3);
+    padding: 20px 30px;
+    border-radius: 30px;
+    max-width: 500px;
+    text-align: center;
+    font-size: 1.1rem;
+    color: #fff;
+    margin: 10px 0;
+    box-shadow: 0 0 20px rgba(76, 201, 240, 0.1);
+}
+
+.connector-box strong {
+    color: var(--accent-blue);
+}
+
+/* Info Panel */
+.info-panel {
+    flex: 1;
+    max-width: 400px;
+}
+
+h2 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    color: #fff;
+}
+
+.desc {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+}
+
+.tech-card {
+    background: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    font-size: 0.9rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.tech-card p {
+    margin-bottom: 0.5rem;
+}
+
+.tech-card strong {
+    color: var(--accent-blue);
+}
+
+/* Controls */
+.controls {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: var(--font-main);
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn.primary {
+    background: linear-gradient(45deg, var(--accent-blue), var(--accent-purple));
+    color: white;
+    font-size: 1.2rem;
+    padding: 15px 40px;
+}
+
+.btn.small {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-primary);
+    font-size: 0.8rem;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn.small:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* Canvas & Visualization Containers */
+.canvas-container {
+    flex: 1.5;
+    height: 550px;
+    /* Slight increase for text mining vertical stacking */
+    background: var(--card-bg);
+    border-radius: 16px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+canvas {
+    width: 100%;
+    height: 100%;
+}
+
+/* 5.1 Text Mining Specifics - REDESIGNED */
+#text-flow-container {
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    font-family: var(--font-mono);
+    gap: 15px;
+    overflow-y: auto;
+}
+
+.mining-stage {
+    width: 90%;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 8px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    min-height: 80px;
+    transition: all 0.3s ease;
+}
+
+#stage-input {
+    border: 1px solid rgba(76, 201, 240, 0.1);
+    min-height: 60px;
+    justify-content: center;
+}
+
+#stage-process {
+    border: 1px solid rgba(247, 37, 133, 0.1);
+    min-height: 140px;
+}
+
+#stage-output {
+    border: 1px solid rgba(114, 9, 183, 0.1);
+    flex: 1;
+    min-height: 180px;
+}
+
+.stage-label {
+    position: absolute;
+    top: -10px;
+    background: var(--card-bg);
+    padding: 0 10px;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+}
+
+#raw-text-display {
+    font-size: 1.1rem;
+    color: var(--text-primary);
+    text-align: center;
+    opacity: 0.7;
+    transition: opacity 0.5s;
+    font-style: italic;
+}
+
+#token-display-area {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    margin-bottom: 15px;
+    align-content: flex-start;
+}
+
+#mining-status {
+    font-size: 0.8rem;
+    color: var(--accent-blue);
+    margin-top: auto;
+    font-weight: 500;
+}
+
+.mining-token {
+    padding: 6px 10px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: all 0.5s ease;
+    font-size: 0.9rem;
+    border: 1px solid transparent;
+}
+
+.mining-token.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.mining-token.rejected {
+    background: rgba(247, 37, 133, 0.1);
+    color: #ff99c8;
+    text-decoration: line-through;
+    border-color: var(--accent-pink);
+}
+
+.mining-token.accepted {
+    background: rgba(76, 201, 240, 0.1);
+    color: #a0e9fd;
+    border-color: var(--accent-blue);
+    font-weight: bold;
+}
+
+.process-arrow {
+    color: var(--text-secondary);
+    font-size: 0.7rem;
+    opacity: 0.5;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+#bag-of-words-chart {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-top: 20px;
+    gap: 8px;
+}
+
+.bar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    justify-content: flex-end;
+    width: 60px;
+    /* Fixed width for better look */
+}
+
+/* Use default bar for generic bars */
+.bar {
+    width: 100%;
+    background: var(--accent-purple);
+    border-radius: 4px 4px 0 0;
+    transition: height 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    min-height: 2px;
+}
+
+.bar-label {
+    font-size: 0.7rem;
+    margin-top: 5px;
+    color: var(--text-secondary);
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+}
+
+/* --- 5.3 Naive Bayes: Scanner Layout --- */
+#bayes-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 30px;
+    gap: 20px;
+    overflow: hidden;
+}
+
+.bayes-stage {
+    width: 100%;
+    margin-bottom: 10px;
+    position: relative;
+    text-align: center;
+    height: 60px;
+    /* Reduced visual clutter space */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.email-display {
+    font-size: 1.4rem;
+    font-weight: 300;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    width: 90%;
+    position: relative;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.email-display.scanning {
+    border-color: var(--accent-blue);
+    box-shadow: 0 0 15px rgba(76, 201, 240, 0.2);
+}
+
+.scan-line {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 5px;
+    background: var(--accent-blue);
+    opacity: 0;
+    box-shadow: 0 0 10px var(--accent-blue);
+    pointer-events: none;
+}
+
+.email-display.scanning~.scan-line {
+    animation: scanMove 2s linear infinite;
+    opacity: 1;
+}
+
+@keyframes scanMove {
+    0% {
+        left: 0;
+    }
+
+    100% {
+        left: 100%;
+    }
+}
+
+/* Evidence Area */
+.evidence-area {
+    width: 100%;
+    height: 120px;
+    border: 1px dashed rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    padding: 10px;
+    gap: 10px;
+    background: rgba(0, 0, 0, 0.2);
+    overflow-y: auto;
+}
+
+.evidence-msg {
+    width: 100%;
+    text-align: center;
+    color: #666;
+    font-style: italic;
+    margin-top: 40px;
+}
+
+.evidence-token {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    background: #222;
+    padding: 5px 10px;
+    border-radius: 4px;
+    border: 1px solid #444;
+    animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.evidence-token .word {
+    font-size: 0.9rem;
+    color: #fff;
+    font-weight: bold;
+}
+
+.evidence-token .impact {
+    font-size: 0.7rem;
+    margin-top: 2px;
+}
+
+.evidence-token.bad {
+    border-color: var(--accent-pink);
+    background: rgba(247, 37, 133, 0.1);
+}
+
+.evidence-token.bad .impact {
+    color: var(--accent-pink);
+}
+
+.evidence-token.good {
+    border-color: var(--accent-green);
+    background: rgba(74, 222, 128, 0.1);
+}
+
+.evidence-token.good .impact {
+    color: var(--accent-green);
+}
+
+/* Result Scales (Horizontal Bars) */
+.result-scales {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    margin-top: auto;
+}
+
+.scale-container {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 15px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.scale-label {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.scale-bar-bg {
+    width: 100%;
+    height: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+    overflow: hidden;
+    margin-bottom: 5px;
+}
+
+.scale-bar-fill {
+    height: 100%;
+    width: 50%;
+    transition: width 0.5s ease;
+}
+
+.scale-bar-fill.spam {
+    background: var(--accent-pink);
+}
+
+.scale-bar-fill.ham {
+    background: var(--accent-green);
+}
+
+.scale-value {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #fff;
+    align-self: flex-end;
+}
+
+@keyframes popIn {
+    from {
+        transform: scale(0);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* 5.4 Time Series Specifics */
+/* 5.4 Time Series Specifics */
+.time-legend {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    gap: 15px;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+}
+
+/* Footer & CTA */
+.final-cta {
+    text-align: center;
+    padding: 100px 20px;
+}
+
+footer {
+    text-align: center;
+    padding: 40px;
+    opacity: 0.5;
+    font-size: 0.8rem;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+
+    .visual-section,
+    .visual-section:nth-child(even) {
+        flex-direction: column;
+    }
+
+    .canvas-container {
+        width: 100%;
+        height: 400px;
+    }
+
+    .info-panel {
+        max-width: 100%;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* --- 5.4 Time Series: Overlay --- */
+.time-overlay {
+    position: absolute;
+    top: 40px;
+    /* Moved to top */
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.1rem;
+    font-weight: 400;
+    color: var(--accent-blue);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    pointer-events: none;
+    text-align: center;
+    width: auto;
+    padding: 8px 16px;
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(76, 201, 240, 0.3);
+    border-radius: 20px;
+    backdrop-filter: blur(4px);
+    opacity: 1;
+    transition: opacity 0.5s;
+    letter-spacing: 0.5px;
+}
+
+#time-status-label {
+    /* Specific tweaks if needed */
+}

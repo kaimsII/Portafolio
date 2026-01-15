@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flujo de Datos Python - Visual Enhanced</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@400;700&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: radial-gradient(circle at center, #1c2128 0%, #0d1117 100%);
+        }
+
+        canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+
+    <canvas id="simCanvas"></canvas>
+
+    <script>
+        const canvas = document.getElementById('simCanvas');
+        const ctx = canvas.getContext('2d');
+
+        let w, h, fontSize;
+        let particles = [];
+        let codeEffects = [];
+        let bars = [20, 20, 20, 20];
+        let editorBox = { x: 0, y: 0, w: 0, h: 0 };
+
+        function resize() {
+            w = window.innerWidth;
+            h = window.innerHeight;
+            canvas.width = w;
+            canvas.height = h;
+
+            // Ajuste layout responsive
+            editorBox = {
+                x: w * 0.20, y: h * 0.15, w: w * 0.6, h: h * 0.6 // Más centrado y grande
+            };
+            fontSize = Math.max(12, Math.min(w * 0.015, 20)); // Fuente dinámica
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        const TYPES = { VALID: 0, NULL: 1, DUPLICATE: 2 };
+
+        // --- CLASE TEXTO FLOTANTE ---
+        class CodeEffect {
+            constructor(x, y, text, color) {
+                this.x = x; this.y = y; this.text = text; this.color = color;
+                this.life = 1.0; this.velocity = -1;
+            }
+            update() { this.y += this.velocity; this.life -= 0.02; }
+            draw() {
+                ctx.globalAlpha = Math.max(0, this.life);
+                ctx.font = '600 ' + fontSize + 'px "Fira Code", monospace';
+                ctx.fillStyle = this.color;
+                ctx.shadowColor = this.color;
+                ctx.shadowBlur = 10;
+                ctx.fillText(this.text, this.x, this.y);
+                ctx.shadowBlur = 0;
+                ctx.globalAlpha = 1.0;
+            }
+        }
+
+        // --- CLASE PARTÍCULA ---
+        class Particle {
+            constructor() { this.spawn(); }
+            spawn() {
+                this.x = -20;
+                this.y = editorBox.y + editorBox.h * 0.5 + (Math.random() - 0.5) * 100;
+                this.speed = Math.random() * 3 + 2;
+                this.type = this.pickType();
+                this.size = 10;
+                this.state = 'raw';
+                this.processed = false;
+                this.barTarget = Math.floor(Math.random() * 4);
+            }
+            pickType() {
+                const r = Math.random();
+                if (r < 0.5) return TYPES.VALID;
+                if (r < 0.75) return TYPES.NULL;
+                return TYPES.DUPLICATE;
+            }
+            update() {
+                if (this.state === 'dead') return;
+                if (this.state !== 'visualized') this.x += this.speed;
+
+                // 1. ENTRADA AL CÓDIGO
+                if (!this.processed && this.x > editorBox.x + 50) {
+                    this.processed = true;
+                    this.state = 'in_python';
+                    if (this.type === TYPES.NULL) {
+                        this.state = 'dead';
+                        codeEffects.push(new CodeEffect(this.x, this.y, "df.dropna() ❌", "#ff5f56"));
+                    } else if (this.type === TYPES.DUPLICATE) {
+                        this.state = 'dead';
+                        codeEffects.push(new CodeEffect(this.x, this.y, "df.drop_duplicates() ✂️", "#a0a0a0"));
+                    } else {
+                        if (Math.random() > 0.7) codeEffects.push(new CodeEffect(this.x, this.y - 20, "validar_dato() ✅", "#28a745"));
+                    }
+                }
+                // 2. SALIDA A GRÁFICA
+                if (this.state === 'in_python' && this.x > editorBox.x + editorBox.w - 50) {
+                    this.state = 'visualized';
+                    codeEffects.push(new CodeEffect(this.x, this.y, "plt.plot(datos) 📊", "#61dafb"));
+                }
+                // 3. MOVIMIENTO A BARRAS
+                if (this.state === 'visualized') {
+                    const targetX = w * 0.9 + (this.barTarget * 30);
+                    const targetY = h - 50 - bars[this.barTarget] * 2;
+                    this.x += (targetX - this.x) * 0.1;
+                    this.y += (targetY - this.y) * 0.1;
+                    if (Math.abs(this.x - targetX) < 5 && Math.abs(this.y - targetY) < 5) {
+                        this.state = 'dead';
+                        bars[this.barTarget] += 5;
+                        if (bars[this.barTarget] > 150) bars[this.barTarget] = 20;
+                    }
+                }
+            }
+            draw() {
+                if (this.state === 'dead') return;
+                ctx.beginPath();
+
+                // MEJORA VISUAL 2: Glow (resplandor) en las partículas
+                ctx.shadowBlur = 20;
+
+                if (this.type === TYPES.VALID) {
+                    ctx.fillStyle = '#61dafb'; ctx.shadowColor = '#61dafb';
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                } else if (this.type === TYPES.NULL) {
+                    ctx.fillStyle = '#ff5f56'; ctx.shadowColor = '#ff5f56';
+                    ctx.rect(this.x - this.size, this.y - this.size, this.size * 2, this.size * 2);
+                } else {
+                    ctx.fillStyle = '#d1d5db'; ctx.shadowColor = '#d1d5db';
+                    ctx.rect(this.x - this.size, this.y - this.size, this.size * 2, this.size * 2);
+                }
+                ctx.fill();
+                ctx.shadowBlur = 0; // Reset glow
+            }
+        }
+
+        // --- DIBUJAR EDITOR ---
+        function drawEditor() {
+            // MEJORA VISUAL 3: Resplandor alrededor de la ventana del editor
+            ctx.shadowColor = 'rgba(97, 218, 251, 0.2)';
+            ctx.shadowBlur = 40;
+
+            // Marco Ventana
+            ctx.fillStyle = '#161b22';
+            ctx.strokeStyle = '#30363d';
+            ctx.lineWidth = 2;
+            ctx.roundRect(editorBox.x, editorBox.y, editorBox.w, editorBox.h, 10);
+            ctx.fill();
+            ctx.stroke();
+            ctx.shadowBlur = 0; // Reset glow
+
+            // Barra Título
+            ctx.fillStyle = '#0d1117';
+            ctx.roundRect(editorBox.x, editorBox.y, editorBox.w, 40, [10, 10, 0, 0]);
+            ctx.fill();
+            ctx.fillStyle = '#c9d1d9';
+            ctx.font = 'bold 16px "Inter", sans-serif';
+            ctx.fillText('📄 script_limpieza.py', editorBox.x + 20, editorBox.y + 25);
+
+            // Botones UI
+            ctx.fillStyle = '#ff5f56'; ctx.beginPath(); ctx.arc(editorBox.x + editorBox.w - 80, editorBox.y + 20, 6, 0, Math.PI * 2); ctx.fill();
+            ctx.fillStyle = '#ffbd2e'; ctx.beginPath(); ctx.arc(editorBox.x + editorBox.w - 60, editorBox.y + 20, 6, 0, Math.PI * 2); ctx.fill();
+            ctx.fillStyle = '#27c93f'; ctx.beginPath(); ctx.arc(editorBox.x + editorBox.w - 40, editorBox.y + 20, 6, 0, Math.PI * 2); ctx.fill();
+
+            // CÓDIGO
+            ctx.font = '14px "Fira Code", monospace';
+            let startY = editorBox.y + 80;
+            let lines = [
+                { n: 1, t: "import pandas as pd", c: "#ff7b72" },
+                { n: 2, t: "import matplotlib.pyplot as plt", c: "#ff7b72" },
+                { n: 3, t: "", c: "" },
+                { n: 4, t: "# 1. Cargar Datos", c: "#8b949e" },
+                { n: 5, t: "datos = cargar_origen()", c: "#e6edf3" },
+                { n: 6, t: "", c: "" },
+                { n: 7, t: "# 2. Limpieza de Datos", c: "#8b949e" },
+                { n: 8, t: "datos = datos.dropna()", c: "#d2a8ff" },
+                { n: 9, t: "datos = datos.drop_duplicates()", c: "#d2a8ff" },
+                { n: 10, t: "", c: "" },
+                { n: 11, t: "# 3. Visualización", c: "#8b949e" },
+                { n: 12, t: "plt.plot(datos)", c: "#79c0ff" },
+                { n: 13, t: "plt.show()", c: "#79c0ff" }
+            ];
+
+            lines.forEach(line => {
+                ctx.fillStyle = '#484f58';
+                ctx.fillText(line.n, editorBox.x + 20, startY);
+                ctx.fillStyle = line.c;
+                ctx.fillText(line.t, editorBox.x + 60, startY);
+                startY += 25;
+            });
+
+            // Cursor parpadeante con glow
+            if (Math.floor(Date.now() / 500) % 2 === 0) {
+                ctx.shadowColor = '#22d3ee'; ctx.shadowBlur = 10;
+                ctx.fillStyle = '#22d3ee';
+                ctx.fillRect(editorBox.x + 60, startY + 10, 10, 20);
+                ctx.shadowBlur = 0;
+                ctx.fillText("EJECUTANDO ANÁLISIS...", editorBox.x + 80, startY + 25);
+            }
+        }
+
+        function drawChart() {
+            const chartBaseX = w * 0.9;
+            const chartBaseY = h - 50;
+
+            ctx.beginPath();
+            ctx.strokeStyle = '#8b949e';
+            ctx.moveTo(chartBaseX - 10, chartBaseY); ctx.lineTo(chartBaseX + 120, chartBaseY);
+            ctx.moveTo(chartBaseX - 10, chartBaseY); ctx.lineTo(chartBaseX - 10, chartBaseY - 150);
+            ctx.stroke();
+
+            bars.forEach((val, i) => {
+                // MEJORA VISUAL 4: Barras con gradiente y glow
+                const grad = ctx.createLinearGradient(0, chartBaseY - val, 0, chartBaseY);
+                grad.addColorStop(0, '#22d3ee'); // Cian arriba
+                grad.addColorStop(1, '#61dafb'); // Azul abajo
+
+                ctx.fillStyle = grad;
+                ctx.shadowColor = '#61dafb';
+                ctx.shadowBlur = 15;
+                ctx.fillRect(chartBaseX + (i * 30), chartBaseY - val, 20, val);
+            });
+            ctx.shadowBlur = 0; // Reset glow
+
+            ctx.fillStyle = '#e6edf3';
+            ctx.font = 'bold 14px "Inter", sans-serif';
+            ctx.fillText("GRÁFICO FINAL", chartBaseX, chartBaseY + 30);
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, w, h);
+            drawEditor();
+            drawChart();
+            ctx.fillStyle = '#8b949e';
+            ctx.font = 'bold 20px "Inter", sans-serif';
+            ctx.fillText("DATOS CRUDOS", 50, h / 2);
+
+            if (particles.length < 30 && Math.random() < 0.05) particles.push(new Particle());
+            for (let i = particles.length - 1; i >= 0; i--) {
+                particles[i].update(); particles[i].draw();
+                if (particles[i].state === 'dead') particles.splice(i, 1);
+            }
+            for (let i = codeEffects.length - 1; i >= 0; i--) {
+                codeEffects[i].update(); codeEffects[i].draw();
+                if (codeEffects[i].life <= 0) codeEffects.splice(i, 1);
+            }
+            requestAnimationFrame(animate);
+        }
+        if (!ctx.roundRect) ctx.roundRect = function (x, y, w, h, r) { ctx.rect(x, y, w, h); };
+        animate();
+    </script>
+</body>
+
+</html>

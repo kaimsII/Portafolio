@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deep Learning Portfolio | Python Showcase</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;600&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+
+    <header>
+        <div class="logo">Demo 2: Optimizando una Red Neuronal</div>
+        <div class="subtitle">Ingeniería • Entrenamiento • Optimización</div>
+    </header>
+
+    <div class="container">
+        <!-- 2.1 Engineering -->
+        <section class="split-view" id="step-engineering">
+            <div class="code-panel">
+                <div class="file-tab">1_architecture.py</div>
+                <pre><code class="python">
+<span class="co"># 1. ARQUITECTURA DE LA RED (Keras/TensorFlow)</span>
+<span class="co"># Diseñamos la estructura capa por capa</span>
+
+model = <span class="cl">Sequential</span>([
+    <span class="co"># Capa de Entrada: Recibe datos brutos</span>
+    <span class="cl">Dense</span>(units=<span class="num">8</span>, activation=<span class="str">'relu'</span>, input_shape=(<span class="num">3</span>,)),
+    
+    <span class="co"># Capas Ocultas: Procesamiento profundo</span>
+    <span class="cl">Dense</span>(units=<span class="num">8</span>, activation=<span class="str">'relu'</span>),
+    <span class="cl">Dense</span>(units=<span class="num">8</span>, activation=<span class="str">'relu'</span>),
+    
+    <span class="co"># Capa de Salida: Clasificación final (2 clases)</span>
+    <span class="cl">Dense</span>(units=<span class="num">2</span>, activation=<span class="str">'softmax'</span>)
+])
+                </code></pre>
+            </div>
+            <div class="visual-panel" id="viz-engineering">
+                <div class="viz-label">Visualización de Arquitectura Generada</div>
+                <canvas id="canvas-engineering"></canvas>
+            </div>
+        </section>
+
+        <!-- 2.2 Training -->
+        <section class="split-view" id="step-training">
+            <div class="code-panel">
+                <div class="file-tab">2_training.py</div>
+                <pre><code class="python">
+<span class="co"># 2. ENTRENAMIENTO DEL MODELO</span>
+<span class="co"># El modelo aprende patrones a partir de los datos</span>
+
+<span class="co"># Detener si no mejora para ahorrar tiempo</span>
+early_stop = <span class="cl">EarlyStopping</span>(monitor=<span class="str">'loss'</span>, patience=<span class="num">10</span>)
+
+history = model.<span class="fn">fit</span>(
+    x_train, y_train,
+    epochs=<span class="num">100</span>,          <span class="co"># Máximo de intentos</span>
+    batch_size=<span class="num">32</span>,       <span class="co"># Ejemplos por lote</span>
+    callbacks=[early_stop]
+)
+                </code></pre>
+            </div>
+            <div class="visual-panel" id="viz-training">
+                <div class="viz-label">Curva de Aprendizaje en Tiempo Real</div>
+                <canvas id="canvas-training"></canvas>
+                <div class="overlay-stat" id="train-stat">Epoch: 0 | Loss: 0.00</div>
+            </div>
+        </section>
+
+        <!-- 2.3 Optimization -->
+        <section class="split-view" id="step-optimization">
+            <div class="code-panel">
+                <div class="file-tab">3_optimization.py</div>
+                <pre><code class="python">
+<span class="co"># 3. OPTIMIZACIÓN DE HIPERPARÁMETROS</span>
+<span class="co"># Probamos múltiples combinaciones automáticamente</span>
+
+<span class="co"># Definir qué opciones probar</span>
+param_grid = {
+    <span class="str">'learning_rate'</span>: [<span class="num">0.01</span>, <span class="num">0.001</span>],
+    <span class="str">'batch_size'</span>: [<span class="num">16</span>, <span class="num">32</span>, <span class="num">64</span>]
+}
+
+<span class="co"># Ejecutar búsqueda exhaustiva (Grid Search)</span>
+search = <span class="cl">GridSearchCV</span>(estimator=model, param_grid=param_grid)
+result = search.<span class="fn">fit</span>(x_train, y_train)
+
+<span class="kw">print</span>(<span class="str">f"Mejor configuración: {result.best_params_}"</span>)
+                </code></pre>
+            </div>
+            <div class="visual-panel" id="viz-optimization">
+                <div class="viz-label">Mapa de Calor: Grid Search</div>
+                <canvas id="canvas-optimization"></canvas>
+            </div>
+        </section>
+
+        <!-- 2.4 Diagnostics -->
+        <section class="split-view" id="step-diagnostics">
+            <div class="code-panel">
+                <div class="file-tab">4_diagnostics.py</div>
+                <pre><code class="python">
+<span class="co"># 4. DIAGNÓSTICO Y EVALUACIÓN</span>
+<span class="co"># Verificamos la calidad de las predicciones</span>
+
+y_pred = model.<span class="fn">predict</span>(x_test)
+
+<span class="co"># Generar Matriz de Confusión</span>
+cm = <span class="fn">confusion_matrix</span>(y_true, y_pred)
+
+<span class="co"># Analizar Curvas de Aprendizaje</span>
+<span class="kw">if</span> training_loss < val_loss:
+    <span class="kw">print</span>(<span class="str">"Alerta: Posible Overfitting detectado."</span>)
+<span class="kw">else</span>:
+    <span class="kw">print</span>(<span class="str">"Modelo Saludable: Buen ajuste."</span>)
+                </code></pre>
+            </div>
+            <div class="visual-panel" id="viz-diagnostics">
+                <div class="viz-label">Diagnóstico Visual</div>
+                <canvas id="canvas-diagnostics"></canvas>
+            </div>
+        </section>
+
+        <!-- 2.5 Regularization -->
+        <section class="split-view" id="step-regularization">
+            <div class="code-panel">
+                <div class="file-tab">5_regularization.py</div>
+                <pre><code class="python">
+<span class="co"># 5. REGULARIZACIÓN (Mejora de Robustez)</span>
+<span class="co"># Técnicas para que el modelo generalice mejor</span>
+
+layer = <span class="cl">Dense</span>(
+    units=<span class="num">64</span>, 
+    activation=<span class="str">'relu'</span>,
+    
+    <span class="co"># L2: Penaliza conexiones demasiado fuertes</span>
+    kernel_regularizer=<span class="cl">l2</span>(<span class="num">0.01</span>)
+)
+
+<span class="co"># Dropout: Desactiva neuronas aleatoriamente (50%)</span>
+<span class="co"># Obliga a no depender de caminos específicos</span>
+dropout_layer = <span class="cl">Dropout</span>(rate=<span class="num">0.5</span>)
+                </code></pre>
+            </div>
+            <div class="visual-panel" id="viz-regularization">
+                <div class="viz-label">Efecto Dropout (Tiempo Real)</div>
+                <canvas id="canvas-regularization"></canvas>
+            </div>
+        </section>
+
+    </div>
+
+    <footer>
+        <p>Generado dinámicamente. Sin librerías externas. 100% Canvas API.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
