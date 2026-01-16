@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pipeline de Datos Automatizado</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;600&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg-deep: #030712;
+            --accent-primary: #3b82f6;
+            --accent-glow: #60a5fa;
+            --accent-secondary: #8b5cf6;
+            --accent-success: #10b981;
+            --glass-panel: rgba(255, 255, 255, 0.03);
+            --border-subtle: rgba(255, 255, 255, 0.1);
+            --font-mono: 'JetBrains Mono', monospace;
+            --font-sans: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-deep);
+            color: #e2e8f0;
+            font-family: var(--font-sans);
+            margin: 0;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1200px;
+        }
+
+        /* --- Ambient Background --- */
+        .ambient-mesh {
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.08), transparent 60%);
+            top: -50%;
+            left: -50%;
+            animation: pulseBg 10s infinite alternate;
+            z-index: -10;
+        }
+
+        .grid-floor {
+            position: absolute;
+            width: 200vw;
+            height: 200vh;
+            bottom: -50vh;
+            background:
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            transform: rotateX(60deg);
+            opacity: 0.3;
+            z-index: -5;
+        }
+
+        @keyframes pulseBg {
+            0% {
+                opacity: 0.5;
+                transform: scale(1);
+            }
+
+            100% {
+                opacity: 0.8;
+                transform: scale(1.1);
+            }
+        }
+
+        /* --- The Stage (Container) --- */
+        #stage {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform-style: preserve-3d;
+        }
+
+        /* --- STAGE 1: SOURCE (The Gateway) --- */
+        .gateway-node {
+            position: absolute;
+            left: 10%;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid var(--accent-primary);
+            box-shadow: 0 0 30px rgba(59, 130, 246, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+
+        .bank-icon svg {
+            width: 48px;
+            height: 48px;
+            color: var(--accent-primary);
+            filter: drop-shadow(0 0 10px var(--accent-primary));
+        }
+
+        .gateway-ring {
+            position: absolute;
+            width: 140%;
+            height: 140%;
+            border: 1px dashed var(--border-subtle);
+            border-radius: 50%;
+            animation: spin 30s linear infinite;
+        }
+
+        @keyframes spin {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* --- PARTICLES (Data) --- */
+        .particle {
+            position: absolute;
+            width: 20px;
+            height: 6px;
+            background: var(--accent-glow);
+            border-radius: 2px;
+            box-shadow: 0 0 10px var(--accent-primary);
+            opacity: 0;
+            z-index: 5;
+        }
+
+        /* --- STAGE 2: STRUCTURE (The Grid) --- */
+        .data-grid-container {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%) rotateY(-20deg) rotateX(10deg);
+            transform-style: preserve-3d;
+            transition: all 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .data-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 120px);
+            grid-gap: 5px;
+            padding: 10px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .grid-header {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: #94a3b8;
+            padding: 8px;
+            border-bottom: 1px solid var(--border-subtle);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .grid-row {
+            display: contents;
+        }
+
+        .grid-cell {
+            background: var(--glass-panel);
+            height: 30px;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: #cbd5e1;
+            display: flex;
+            align-items: center;
+            padding: 0 8px;
+            transition: all 0.5s ease;
+            position: relative;
+        }
+
+        .grid-cell.highlight {
+            background: rgba(59, 130, 246, 0.2);
+            color: white;
+            box-shadow: inset 0 0 10px rgba(59, 130, 246, 0.1);
+        }
+
+        .grid-cell.dim {
+            opacity: 0.2;
+            filter: blur(1px);
+        }
+
+        /* --- STAGE 3: QUERY (The Scanner) --- */
+        .scanner-beam {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--accent-success);
+            box-shadow: 0 0 20px var(--accent-success);
+            opacity: 0;
+            pointer-events: none;
+            z-index: 20;
+        }
+
+        /* --- STAGE 4: SHAPE (Morph to Chart) --- */
+        .grid-cell.morphing {
+            transition: transform 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        /* --- STAGE 5: UI HUD (Code) --- */
+        .code-hud {
+            position: absolute;
+            right: 5%;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 380px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 1.5rem;
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: #a5b4fc;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            transition: opacity 1s;
+        }
+
+        .code-hud.visible {
+            opacity: 1;
+        }
+
+        .line-numbers {
+            color: #475569;
+            margin-right: 1rem;
+            user-select: none;
+        }
+
+        .keyword {
+            color: var(--accent-secondary);
+        }
+
+        .string {
+            color: var(--accent-success);
+        }
+
+        .func {
+            color: var(--accent-primary);
+        }
+
+        .comment {
+            color: #64748b;
+            font-style: italic;
+        }
+
+        .optimization-flash {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            opacity: 0;
+            pointer-events: none;
+            mix-blend-mode: overlay;
+        }
+
+        /* --- Status Text --- */
+        .status-tracker {
+            position: absolute;
+            bottom: 3rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 2rem;
+            font-size: 0.8rem;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .status-item {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            transition: all 0.5s;
+            position: relative;
+        }
+
+        .status-item.active {
+            color: white;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        .status-item.active::after {
+            content: '';
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            width: 6px;
+            height: 6px;
+            background: var(--accent-success);
+            border-radius: 50%;
+            box-shadow: 0 0 5px var(--accent-success);
+        }
+
+        /* Titles */
+        .system-status {
+            position: absolute;
+            top: -60px;
+            width: 100%;
+            text-align: center;
+            color: #94a3b8;
+            font-weight: 300;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            opacity: 0;
+            transition: opacity 1s;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="ambient-mesh"></div>
+    <div class="grid-floor"></div>
+
+    <div id="stage">
+        <!-- Source Node -->
+        <div class="gateway-node" id="gateway">
+            <div class="gateway-ring"></div>
+            <div class="bank-icon">
+                <!-- SVG Icon: Building/Bank -->
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0012 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75z" />
+                </svg>
+            </div>
+        </div>
+
+        <!-- Data Grid (Initially Empty) -->
+        <div class="data-grid-container" id="grid-container">
+            <div class="system-status" id="grid-title">ESTRUCTURA_DATOS_V1</div>
+            <div class="data-grid" id="main-grid">
+                <div class="grid-header">ID</div>
+                <div class="grid-header">FECHA</div>
+                <div class="grid-header">CATEGORIA</div>
+                <div class="grid-header">MONTO</div>
+                <!-- Rows injected by JS via particles -->
+            </div>
+            <div class="scanner-beam" id="scanner"></div>
+        </div>
+
+        <!-- Code HUD -->
+        <div class="code-hud" id="code-hud">
+            <div class="optimization-flash" id="opt-flash"></div>
+            <div id="code-content">
+                <span class="line-numbers">1</span> <span class="keyword">def</span> <span
+                    class="func">extraer_datos</span>():<br>
+                <span class="line-numbers">2</span> &nbsp;&nbsp;consulta = <span class="string">"SELECT * FROM
+                    crudos"</span><br>
+                <span class="line-numbers">3</span> &nbsp;&nbsp;datos = db.<span
+                    class="func">ejecutar</span>(consulta)<br>
+                <span class="line-numbers">4</span> &nbsp;&nbsp;<span class="keyword">return</span> datos
+            </div>
+        </div>
+    </div>
+
+    <!-- Status Tracker -->
+    <div class="status-tracker">
+        <div class="status-item" id="status-1">Extracción</div>
+        <div class="status-item" id="status-2">Estructura</div>
+        <div class="status-item" id="status-3">Consulta</div>
+        <div class="status-item" id="status-4">Análisis</div>
+        <div class="status-item" id="status-5">Optimización</div>
+    </div>
+
+    <script>
+        // --- CONFIG & STATE ---
+        const MOCK_DATA = [
+            { id: 'TX-991', date: '2025-10-01', cat: 'Servidor', val: 1200 },
+            { id: 'TX-992', date: '2025-10-02', cat: 'Ventas', val: 8500 }, // Target
+            { id: 'TX-993', date: '2025-10-03', cat: 'Oficina', val: 450 },
+            { id: 'TX-994', date: '2025-10-04', cat: 'Ventas', val: 9200 }, // Target
+            { id: 'TX-995', date: '2025-10-05', cat: 'Ventas', val: 7800 }, // Target
+            { id: 'TX-996', date: '2025-10-06', cat: 'Legal', val: 2100 }
+        ];
+
+        let globalSpeed = 1.0;
+
+        // --- UTILS ---
+        const wait = (ms) => new Promise(r => setTimeout(r, ms / globalSpeed));
+        const getEl = (id) => document.getElementById(id);
+        const setStatus = (idx) => {
+            document.querySelectorAll('.status-item').forEach((el, i) => {
+                el.classList.toggle('active', i === idx);
+            });
+        };
+
+        // --- SEQUENCE FUNCTIONS ---
+
+        // 1. EXTRACTION
+        async function runExtraction() {
+            setStatus(0);
+            const gateway = getEl('gateway');
+            const gridContainer = getEl('grid-container');
+            const mainGrid = getEl('main-grid');
+
+            // Clear previous run and ensure visibility reset
+            document.querySelectorAll('.grid-row').forEach(e => e.remove());
+            getEl('grid-title').style.opacity = 0;
+            gridContainer.style.opacity = 0;
+            getEl('code-hud').classList.remove('visible');
+
+            await wait(1000);
+
+            for (let i = 0; i < MOCK_DATA.length; i++) {
+                const data = MOCK_DATA[i];
+
+                const p = document.createElement('div');
+                p.className = 'particle';
+                p.style.top = (gateway.offsetTop + 50) + 'px';
+                p.style.left = (gateway.offsetLeft + 50) + 'px';
+                document.body.appendChild(p);
+
+                const targetX = window.innerWidth / 2 - 100;
+                const targetY = window.innerHeight / 2 - 150 + (i * 35);
+
+                const duration = 800;
+
+                requestAnimationFrame(() => {
+                    p.style.transition = `all ${duration / 1000}s cubic-bezier(0.2, 0.8, 0.2, 1)`;
+                    p.style.opacity = 1;
+                    p.style.transform = `translate(${targetX - 100}px, ${targetY - 200}px)`;
+                });
+
+                setTimeout(() => {
+                    p.remove();
+
+                    const rowFrag = document.createElement('div');
+                    rowFrag.className = 'grid-row';
+                    rowFrag.innerHTML = `
+                        <div class="grid-cell" id="row-${i}-0">${data.id}</div>
+                        <div class="grid-cell" id="row-${i}-1">${data.date}</div>
+                        <div class="grid-cell" id="row-${i}-2">${data.cat}</div>
+                        <div class="grid-cell" id="row-${i}-3">$${data.val}</div>
+                    `;
+                    mainGrid.appendChild(rowFrag);
+
+                    if (i === 0) {
+                        gridContainer.style.opacity = 1;
+                        gridContainer.style.transition = 'opacity 0.5s';
+                    }
+
+                }, duration);
+
+                await wait(300);
+            }
+
+            getEl('grid-title').textContent = "INGESTA_DATOS_CRUDOS";
+            getEl('grid-title').style.opacity = 1;
+
+            await wait(1000);
+        }
+
+        // 2. STRUCTURE
+        async function runStructure() {
+            setStatus(1);
+            const gridContainer = getEl('grid-container');
+
+            gridContainer.style.transform = 'translate(-50%, -50%) rotateY(0deg) rotateX(0deg) scale(1.1)';
+            getEl('grid-title').textContent = "ESTRUCTURA_SQL_ACTIVA";
+
+            await wait(2000);
+        }
+
+        // 3. QUERY
+        async function runQuery() {
+            setStatus(2);
+
+            const hud = getEl('code-hud');
+            hud.classList.add('visible');
+
+            await wait(1000);
+
+            const scanner = getEl('scanner');
+            scanner.style.transition = 'top 1.5s linear, opacity 0.2s';
+            scanner.style.opacity = 1;
+            scanner.style.top = '100%';
+
+            // FIX: Selector for explicit rows
+            const rows = document.querySelectorAll('.grid-row');
+
+            rows.forEach((row, i) => {
+                const cells = Array.from(row.children);
+                // Header keys: ID, DATE, CAT, AMOUNT
+                // We check CAT (index 2)
+                const isTarget = cells[2] && cells[2].innerText === 'Ventas';
+
+                setTimeout(() => {
+                    if (isTarget) {
+                        cells.forEach(c => c.classList.add('highlight'));
+                    } else {
+                        cells.forEach(c => c.classList.add('dim'));
+                    }
+                }, 200 + (i * 200));
+            });
+
+            await wait(2000);
+            scanner.style.opacity = 0;
+            scanner.style.top = 0;
+        }
+
+        // 4. ANALYSIS
+        async function runAnalysis() {
+            setStatus(3);
+            getEl('grid-title').textContent = "GENERANDO_VISUALIZACION";
+
+            const gridContainer = getEl('grid-container');
+            gridContainer.style.transform = 'translate(-50%, -50%) rotateY(-25deg) rotateX(20deg) scale(1)';
+
+            // FIX: Iterate rows instead of assuming flat grid children
+            const rows = Array.from(document.querySelectorAll('.grid-row'));
+
+            let barIndex = 0;
+
+            rows.forEach(row => {
+                const rowCells = Array.from(row.children);
+                // [id, date, cat, amount]
+
+                // Check if highlighted (safe check on first cell)
+                if (!rowCells[0]) return;
+                const isHighlight = rowCells[0].classList.contains('highlight');
+
+                if (!isHighlight) {
+                    row.style.transition = 'all 0.5s';
+                    row.style.opacity = 0;
+                    row.style.transform = 'scale(0)';
+                } else {
+                    const val = parseInt(rowCells[3].innerText.replace('$', ''));
+                    const bar = rowCells[3];
+                    const heightScale = val / 100;
+
+                    rowCells[0].style.opacity = 0;
+                    rowCells[1].style.transform = `translateX(${barIndex * 40}px) translateY(50px)`;
+                    rowCells[2].style.opacity = 0;
+
+                    bar.style.background = 'linear-gradient(to top, var(--accent-primary), var(--accent-secondary))';
+                    bar.style.color = 'transparent';
+                    bar.style.transformOrigin = 'bottom left';
+                    bar.style.transition = 'transform 1s cubic-bezier(0.34, 1.56, 0.64, 1)';
+                    bar.style.transform = `translateZ(50px) scaleY(${heightScale * 0.5}) scaleX(2)`;
+                    bar.style.boxShadow = '0 0 20px var(--accent-primary)';
+
+                    barIndex++;
+                }
+            });
+
+            await wait(4000);
+        }
+
+        // 5. OPTIMIZE
+        async function runOptimize() {
+            setStatus(4);
+            const hud = getEl('code-hud');
+            const flash = getEl('opt-flash');
+            const content = getEl('code-content');
+
+            hud.style.borderColor = 'var(--accent-success)';
+            flash.style.opacity = 0.8;
+            await wait(100);
+            flash.style.opacity = 0;
+
+            content.innerHTML = `
+                <span class="line-numbers">1</span> <span class="keyword">def</span> <span class="func">analisis_ai</span>():<br>
+                <span class="line-numbers">2</span> &nbsp;&nbsp;<span class="keyword">return</span> df.filtro(cat=<span class="string">'Ventas'</span>)<br>
+                <span class="line-numbers">3</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.graficar(<span class="string">'3d'</span>)<br>
+                <span class="line-numbers">4</span> &nbsp;&nbsp;<span class="comment"># Optimizado por Cortex</span>
+            `;
+
+            globalSpeed = 3.0; // Speed Boost
+            getEl('grid-title').textContent = "OPTIMIZACION_DETECTADA";
+            getEl('grid-title').style.color = 'var(--accent-success)';
+
+            await wait(4000);
+
+            // Cleanup for loop
+            const gridContainer = getEl('grid-container');
+            gridContainer.style.opacity = 0;
+            hud.classList.remove('visible');
+
+            // Reset transforms/styles for next loop
+            document.querySelectorAll('.grid-cell').forEach(c => {
+                c.style.transform = 'none';
+                c.style.opacity = 1;
+                c.style.background = 'var(--glass-panel)';
+                c.style.boxShadow = 'none';
+                c.classList.remove('highlight', 'dim');
+            });
+
+            await wait(1000);
+        }
+
+        // --- MASTER LOOP ---
+        async function startLoop() {
+            while (true) {
+                // Initial State
+                getEl('grid-container').style.transform = 'translate(-50%, -50%) rotateY(-20deg) rotateX(10deg)';
+                getEl('grid-title').style.color = '#94a3b8';
+                getEl('code-content').innerHTML = `
+                    <span class="line-numbers">1</span> <span class="keyword">def</span> <span class="func">extraer_datos</span>():<br>
+                    <span class="line-numbers">2</span> &nbsp;&nbsp;consulta = <span class="string">"SELECT * FROM crudos"</span><br>
+                    <span class="line-numbers">3</span> &nbsp;&nbsp;datos = db.<span class="func">ejecutar</span>(consulta)<br>
+                    <span class="line-numbers">4</span> &nbsp;&nbsp;<span class="keyword">return</span> datos
+                `;
+                getEl('code-hud').style.borderColor = '#334155';
+
+                // Steps
+                await runExtraction();
+                await runStructure();
+                await runQuery();
+                await runAnalysis();
+                await runOptimize();
+
+                // Keep the speed boost? Or reset?
+                // Resetting cleanly to normal speed for sanity in demo
+                // globalSpeed = 1.0; 
+            }
+        }
+
+        window.onload = startLoop;
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,21 @@
+/* Control Button */
+.control-btn {
+    background: transparent;
+    border: 1px solid var(--color-primary);
+    color: var(--color-primary);
+    padding: 0.25rem 0.75rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-family: var(--font-main);
+    transition: all 0.13s;
+    margin-right: 1rem;
+}
+
+.control-btn:hover {
+    background: rgba(56, 189, 248, 0.1);
+}
+
+.control-btn:active {
+    background: rgba(56, 189, 248, 0.2);
+}

@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análisis y Procesamiento de Datos con Python</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0f172a;
+            --bg-card: #1e293b;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent-blue: #3b82f6;
+            --accent-green: #10b981;
+            --accent-purple: #8b5cf6;
+            --accent-cyan: #06b6d4;
+            --accent-orange: #f59e0b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Layout */
+        section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 4rem 2rem;
+            position: relative;
+            opacity: 0.3;
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            transform: scale(0.95);
+        }
+
+        section.active {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .content {
+            z-index: 10;
+        }
+
+        .visual-container {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: var(--bg-card);
+            border-radius: 12px;
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid #334155;
+        }
+
+        canvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Typography */
+        h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(to right, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            color: var(--accent-blue);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 1rem;
+        }
+
+        h3 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        p {
+            font-size: 1.125rem;
+            line-height: 1.75;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        ul {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.75rem;
+            color: var(--text-primary);
+            font-size: 1rem;
+        }
+
+        li::before {
+            content: "";
+            width: 6px;
+            height: 6px;
+            background-color: var(--accent-blue);
+            border-radius: 50%;
+            margin-right: 1rem;
+        }
+
+        .next-chapter-hint {
+            margin-top: 2rem;
+            font-size: 0.9rem;
+            color: var(--accent-blue);
+            font-style: italic;
+            border-left: 2px solid var(--accent-blue);
+            padding-left: 1rem;
+        }
+
+        /* Header Specifics */
+        #header {
+            text-align: center;
+        }
+
+        #header .container {
+            display: flex;
+            flex-direction: column;
+        }
+
+        #header h1 {
+            font-size: 5rem;
+            background: linear-gradient(to right, var(--accent-blue), var(--accent-cyan));
+            -webkit-background-clip: text;
+        }
+
+        /* Animations */
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        /* Buttons */
+        .btn-demo {
+            display: inline-flex;
+            align-items: center;
+            margin-top: 1.5rem;
+            padding: 0.6rem 1.4rem;
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid var(--btn-color, #fff);
+            color: var(--btn-color, #fff);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border-radius: 9999px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(4px);
+        }
+
+        .btn-demo:hover {
+            background: var(--btn-color);
+            color: #fff;
+            box-shadow: 0 0 20px var(--btn-color);
+            transform: translateY(-3px);
+            border-color: var(--btn-color);
+        }
+
+        .btn-demo svg {
+            transition: transform 0.3s ease;
+        }
+
+        .btn-demo:hover svg {
+            transform: translateX(4px);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header -->
+    <section id="header" class="active">
+        <div class="container">
+            <h1 class="floating">Análisis y Procesamiento<br>de Datos con Python</h1>
+            <p style="max-width: 600px; margin: 0 auto;">
+                Automatización, análisis y flujo de datos eficiente.<br>
+                Un recorrido visual por el contenido del curso.
+            </p>
+        </div>
+        <!-- Background Animation Canvas -->
+        <canvas id="bg-canvas"
+            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.2;"></canvas>
+    </section>
+
+    <!-- Chapter 1 -->
+    <section id="chapter-1">
+        <div class="container">
+            <div class="content">
+                <h2>Capítulo 1</h2>
+                <h3>Fundamentos aplicados a Hojas de Cálculo</h3>
+                <p>El punto de partida: entender cómo Python interactúa con la estructura tabular de los datos.</p>
+                <ul>
+                    <li>Preparación del entorno VS Code + IA</li>
+                    <li>Librerías para datos tabulares</li>
+                    <li>Concepto de Libro, Hoja, Celda, Rango</li>
+                    <li>Lectura y escritura programática</li>
+                </ul>
+                <a href="./Demo 1/index.html" class="btn-demo" style="--btn-color: var(--accent-blue);">
+                    Ver Demo: Spreadsheets
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        style="margin-left: 8px;">
+                        <path d="M5 12h14M12 5l7 7-7 7" />
+                    </svg>
+                </a>
+                <div class="next-chapter-hint">
+                    Siguiente: Usaremos estas estructuras para automatizar tareas repetitivas.
+                </div>
+            </div>
+            <div class="visual-container">
+                <canvas id="c1-canvas"></canvas>
+            </div>
+        </div>
+    </section>
+
+    <!-- Chapter 2 -->
+    <section id="chapter-2">
+        <div class="container">
+            <div class="visual-container">
+                <canvas id="c2-canvas"></canvas>
+            </div>
+            <div class="content">
+                <h2 style="color: var(--accent-purple);">Capítulo 2</h2>
+                <h3>Automatización de Procesos</h3>
+                <p>Transformamos tareas manuales en flujos de trabajo eficientes y desatendidos.</p>
+                <ul>
+                    <li>Pipelines de automatización</li>
+                    <li>Formato y estilos automáticos</li>
+                    <li>Macros vs Scripts de Python</li>
+                    <li>Ejecución continua sin intervención</li>
+                </ul>
+                <a href="./Demo 2/index.html" class="btn-demo" style="--btn-color: var(--accent-purple);">
+                    Ver Demo: Automatización
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        style="margin-left: 8px;">
+                        <path d="M5 12h14M12 5l7 7-7 7" />
+                    </svg>
+                </a>
+                <div class="next-chapter-hint" style="border-color: var(--accent-purple); color: var(--accent-purple);">
+                    Siguiente: Los datos automatizados necesitan un almacenamiento robusto.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Chapter 3 -->
+    <section id="chapter-3">
+        <div class="container">
+            <div class="content">
+                <h2 style="color: var(--accent-green);">Capítulo 3</h2>
+                <h3>Integración con Bases de Datos</h3>
+                <p>Migramos de archivos dispersos a sistemas centralizados y seguros.</p>
+                <ul>
+                    <li>Conexión SQL y Python</li>
+                    <li>Persistencia de datos</li>
+                    <li>DataFrames como interfaz</li>
+                    <li>Consultas visuales y extracción</li>
+                </ul>
+                <a href="./Demo 3/index.html" class="btn-demo" style="--btn-color: var(--accent-green);">
+                    Ver Demo: Bases de Datos
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        style="margin-left: 8px;">
+                        <path d="M5 12h14M12 5l7 7-7 7" />
+                    </svg>
+                </a>
+                <div class="next-chapter-hint" style="border-color: var(--accent-green); color: var(--accent-green);">
+                    Siguiente: Convertiremos estos datos almacenados en información visual.
+                </div>
+            </div>
+            <div class="visual-container">
+                <canvas id="c3-canvas"></canvas>
+            </div>
+        </div>
+    </section>
+
+    <!-- Chapter 4 -->
+    <section id="chapter-4">
+        <div class="container">
+            <div class="visual-container">
+                <canvas id="c4-canvas"></canvas>
+            </div>
+            <div class="content">
+                <h2 style="color: var(--accent-orange);">Capítulo 4</h2>
+                <h3>Análisis y Visualización</h3>
+                <p>El dato se convierte en decisión. Generación de dashboards y reportes automáticos.</p>
+                <ul>
+                    <li>Limpieza y transformación</li>
+                    <li>Agrupación y resumen (Group By)</li>
+                    <li>Gráficos explicativos automáticos</li>
+                    <li>Reportes dinámicos</li>
+                </ul>
+                <a href="./Demo 4/index.html" class="btn-demo" style="--btn-color: var(--accent-orange);">
+                    Ver Demo: Análisis Visual
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        style="margin-left: 8px;">
+                        <path d="M5 12h14M12 5l7 7-7 7" />
+                    </svg>
+                </a>
+                <div class="next-chapter-hint" style="border-color: var(--accent-orange); color: var(--accent-orange);">
+                    Siguiente: Escalaremos para manejar grandes volúmenes de datos planos.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Chapter 5 -->
+    <section id="chapter-5">
+        <div class="container">
+            <div class="content">
+                <h2 style="color: var(--accent-cyan);">Capítulo 5</h2>
+                <h3>Gestión de Archivos CSV</h3>
+                <p>Procesamiento eficiente de grandes volúmenes de información e intercambio de datos.</p>
+                <ul>
+                    <li>Procesamiento por lotes</li>
+                    <li>Filtrado y búsqueda rápida</li>
+                    <li>Estructuras de diccionarios</li>
+                    <li>Normalización de formatos</li>
+                </ul>
+                <a href="./Demo 5/index.html" class="btn-demo" style="--btn-color: var(--accent-cyan);">
+                    Ver Demo: Gestión CSV
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        style="margin-left: 8px;">
+                        <path d="M5 12h14M12 5l7 7-7 7" />
+                    </svg>
+                </a>
+                <div class="next-chapter-hint" style="border-color: var(--accent-cyan); color: var(--accent-cyan);">
+                    Cierre: Integración total del sistema.
+                </div>
+            </div>
+            <div class="visual-container">
+                <canvas id="c5-canvas"></canvas>
+            </div>
+        </div>
+    </section>
+
+    <!-- Closing -->
+    <section id="closing">
+        <div class="container" style="text-align: center; display: block;">
+            <h2 style="color: #fff; margin-bottom: 2rem;">Sistema Integral</h2>
+            <div class="visual-container" style="margin: 0 auto; max-width: 800px; height: 300px;">
+                <canvas id="final-canvas"></canvas>
+            </div>
+            <h3 style="margin-top: 2rem;">De los datos crudos a la automatización inteligente.</h3>
+        </div>
+    </section>
+
+    <script>
+        // --- INTERSECTION OBSERVER ---
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.5 // Trigger when 50% visible
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+
+                    // Trigger animation based on ID
+                    const id = entry.target.id;
+                    if (id === 'chapter-1') animChapter1();
+                    if (id === 'chapter-2') animChapter2();
+                    if (id === 'chapter-3') animChapter3();
+                    if (id === 'chapter-4') animChapter4();
+                    if (id === 'chapter-5') animChapter5();
+                    if (id === 'closing') animFinal();
+                } else {
+                    entry.target.classList.remove('active');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('section').forEach(section => {
+            observer.observe(section);
+        });
+
+        // Trigger header separately or via observer if it has ID
+        // Header has id="header"
+        // Ensure initial animations start if already in view
+
+        // --- ANIMATIONS ---
+
+        // Helper: Resize canvas
+        function resizeCanvas(id) {
+            const canvas = document.getElementById(id);
+            const parent = canvas.parentElement;
+            canvas.width = parent.clientWidth;
+            canvas.height = parent.clientHeight;
+            return { canvas, ctx: canvas.getContext('2d'), width: canvas.width, height: canvas.height };
+        }
+
+        // Global BG Animation
+        const bg = resizeCanvas('bg-canvas');
+        const bgDrops = [];
+        for (let i = 0; i < 100; i++) {
+            bgDrops.push({
+                x: Math.random() * bg.width,
+                y: Math.random() * bg.height,
+                v: Math.random() * 2 + 0.5,
+                len: Math.random() * 20 + 5
+            });
+        }
+        function drawBg() {
+            bg.ctx.clearRect(0, 0, bg.width, bg.height);
+            bg.ctx.strokeStyle = '#3b82f6';
+            bg.ctx.lineWidth = 1;
+            bg.ctx.globalAlpha = 0.3;
+
+            bgDrops.forEach(d => {
+                bg.ctx.beginPath();
+                bg.ctx.moveTo(d.x, d.y);
+                bg.ctx.lineTo(d.x, d.y + d.len);
+                bg.ctx.stroke();
+                d.y += d.v;
+                if (d.y > bg.height) d.y = -d.len;
+            });
+            requestAnimationFrame(drawBg);
+        }
+        drawBg();
+
+        // Animation Triggers
+        // Removed central trigger function in favor of direct calls in Observer
+
+
+        // C1: Spreadsheet
+        function animChapter1() {
+            const { ctx, width, height } = resizeCanvas('c1-canvas');
+            let cells = [];
+            const cols = 5;
+            const rows = 4;
+            const cw = width / cols;
+            const ch = height / rows;
+
+            let frame = 0;
+
+            function draw() {
+                if (!document.getElementById('chapter-1').classList.contains('active')) return;
+
+                ctx.fillStyle = '#1e293b';
+                ctx.fillRect(0, 0, width, height);
+
+                // Draw grid
+                ctx.strokeStyle = '#334155';
+                for (let i = 0; i <= cols; i++) {
+                    ctx.beginPath(); ctx.moveTo(i * cw, 0); ctx.lineTo(i * cw, height); ctx.stroke();
+                }
+                for (let i = 0; i <= rows; i++) {
+                    ctx.beginPath(); ctx.moveTo(0, i * ch); ctx.lineTo(width, i * ch); ctx.stroke();
+                }
+
+                // Fill cells sequentially
+                let totalCells = cols * rows;
+                let activeCell = Math.floor(frame / 10);
+
+                for (let i = 0; i < Math.min(activeCell, totalCells); i++) {
+                    let c = i % cols;
+                    let r = Math.floor(i / cols);
+                    ctx.fillStyle = '#3b82f6';
+                    ctx.globalAlpha = 0.2;
+                    ctx.fillRect(c * cw + 5, r * ch + 5, cw - 10, ch - 10);
+                    ctx.globalAlpha = 1;
+
+                    // Simulated Text
+                    ctx.fillStyle = '#94a3b8';
+                    ctx.fillRect(c * cw + 15, r * ch + 20, cw - 40, 4);
+                }
+
+                // Highlight "Active" writer
+                if (activeCell < totalCells) {
+                    let c = activeCell % cols;
+                    let r = Math.floor(activeCell / cols);
+                    ctx.strokeStyle = '#60a5fa';
+                    ctx.lineWidth = 2;
+                    ctx.strokeRect(c * cw + 5, r * ch + 5, cw - 10, ch - 10);
+                }
+
+                frame++;
+                requestAnimationFrame(draw);
+            }
+            draw();
+        }
+
+        // C2: Automation Lines
+        function animChapter2() {
+            const { ctx, width, height } = resizeCanvas('c2-canvas');
+
+            let nodes = [
+                { x: 50, y: height / 2, active: false },
+                { x: width / 3, y: height / 4, active: false },
+                { x: width / 3, y: 3 * height / 4, active: false },
+                { x: 2 * width / 3, y: height / 2, active: false },
+                { x: width - 50, y: height / 2, active: false }
+            ];
+
+            let packet = { src: 0, dest: 1, t: 0, active: true };
+
+            function draw() {
+                if (!document.getElementById('chapter-2').classList.contains('active')) return;
+
+                ctx.clearRect(0, 0, width, height);
+
+                // Draw connections
+                ctx.strokeStyle = '#475569';
+                ctx.lineWidth = 2;
+                ctx.beginPath(); ctx.moveTo(nodes[0].x, nodes[0].y); ctx.lineTo(nodes[1].x, nodes[1].y); ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(nodes[0].x, nodes[0].y); ctx.lineTo(nodes[2].x, nodes[2].y); ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(nodes[1].x, nodes[1].y); ctx.lineTo(nodes[3].x, nodes[3].y); ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(nodes[2].x, nodes[2].y); ctx.lineTo(nodes[3].x, nodes[3].y); ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(nodes[3].x, nodes[3].y); ctx.lineTo(nodes[4].x, nodes[4].y); ctx.stroke();
+
+                // Draw Nodes
+                nodes.forEach((n, i) => {
+                    ctx.fillStyle = n.active ? '#a855f7' : '#334155';
+                    ctx.beginPath();
+                    ctx.arc(n.x, n.y, 10, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+
+                // Animate Packet
+                if (packet.active) {
+                    let start = nodes[packet.src];
+                    let end = nodes[packet.dest];
+                    let cx = start.x + (end.x - start.x) * packet.t;
+                    let cy = start.y + (end.y - start.y) * packet.t;
+
+                    ctx.fillStyle = '#d8b4fe';
+                    ctx.beginPath(); ctx.arc(cx, cy, 6, 0, Math.PI * 2); ctx.fill();
+
+                    packet.t += 0.02;
+                    if (packet.t >= 1) {
+                        nodes[packet.dest].active = true;
+                        packet.t = 0;
+                        packet.src = packet.dest;
+                        // Simple Logic to move fwd
+                        if (packet.src === 1) packet.dest = 3;
+                        else if (packet.src === 2) packet.dest = 3;
+                        else if (packet.src === 3) packet.dest = 4;
+                        else if (packet.src === 4) {
+                            packet.src = 0; packet.dest = 1;
+                            nodes.forEach(n => n.active = false);
+                        }
+                        else packet.dest = 1;
+                    }
+                }
+
+                requestAnimationFrame(draw);
+            }
+            draw();
+        }
+
+        // C3: Database Ingest
+        function animChapter3() {
+            const { ctx, width, height } = resizeCanvas('c3-canvas');
+
+            // DB Icon properties
+            const dbX = width * 0.75;
+            const dbY = height / 2;
+            const dbW = 80;
+            const dbH = 100;
+
+            let particles = [];
+            let frame = 0;
+
+            function draw() {
+                if (!document.getElementById('chapter-3').classList.contains('active')) return;
+
+                ctx.clearRect(0, 0, width, height);
+
+                // Draw DB
+                ctx.fillStyle = '#10b981';
+                ctx.beginPath();
+                ctx.ellipse(dbX, dbY - dbH / 2, dbW / 2, 10, 0, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.fillRect(dbX - dbW / 2, dbY - dbH / 2, dbW, dbH);
+                ctx.beginPath();
+                ctx.ellipse(dbX, dbY + dbH / 2, dbW / 2, 10, 0, 0, Math.PI, 0); // Bottom curve
+                ctx.fill();
+                // Shade
+                ctx.fillStyle = 'rgba(0,0,0,0.2)';
+                ctx.beginPath();
+                ctx.ellipse(dbX, dbY - dbH / 2, dbW / 2, 10, 0, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Spawn Particles from Spreadsheet Area (Left)
+                if (frame % 20 === 0) {
+                    particles.push({ x: 50, y: Math.random() * height * 0.6 + height * 0.2, tx: dbX, ty: dbY, t: 0 });
+                }
+
+                // Move Particles
+                for (let i = 0; i < particles.length; i++) {
+                    let p = particles[i];
+                    p.t += 0.015;
+                    let dx = p.tx - p.x;
+                    let dy = p.ty - p.y;
+
+                    let cx = p.x + dx * p.t;
+                    let cy = p.y + dy * p.t;
+
+                    ctx.fillStyle = '#6ee7b7';
+                    ctx.fillRect(cx, cy, 8, 4);
+
+                    if (p.t >= 1) {
+                        particles.splice(i, 1);
+                        i--;
+                    }
+                }
+
+                frame++;
+                requestAnimationFrame(draw);
+            }
+            draw();
+        }
+
+        // C4: Charts
+        function animChapter4() {
+            const { ctx, width, height } = resizeCanvas('c4-canvas');
+
+            let bars = [10, 20, 15, 40, 30, 60, 50];
+            let targetBars = [30, 50, 45, 80, 60, 90, 75];
+            let currentBars = [...bars];
+
+            function draw() {
+                if (!document.getElementById('chapter-4').classList.contains('active')) return;
+
+                ctx.clearRect(0, 0, width, height);
+
+                const barW = (width / bars.length) * 0.6;
+                const spacing = (width / bars.length) * 0.4;
+                const startX = spacing / 2;
+                const bottomY = height - 20;
+
+                for (let i = 0; i < currentBars.length; i++) {
+                    // Update value
+                    if (currentBars[i] < targetBars[i]) currentBars[i] += 0.5;
+                    else if (currentBars[i] > 10) currentBars[i] = 10; // reset loop
+
+                    let h = (currentBars[i] / 100) * (height - 40);
+
+                    ctx.fillStyle = '#f59e0b';
+                    ctx.fillRect(startX + i * (barW + spacing), bottomY - h, barW, h);
+                }
+
+                // Draw Line Chart Overlay
+                ctx.beginPath();
+                ctx.strokeStyle = '#fff';
+                ctx.lineWidth = 2;
+                for (let i = 0; i < currentBars.length; i++) {
+                    let h = (currentBars[i] / 100) * (height - 40);
+                    let x = startX + i * (barW + spacing) + barW / 2;
+                    let y = bottomY - h;
+                    if (i === 0) ctx.moveTo(x, y);
+                    else ctx.lineTo(x, y);
+                }
+                ctx.stroke();
+
+                requestAnimationFrame(draw);
+            }
+            draw();
+        }
+
+        // C5: CSV Flow
+        function animChapter5() {
+            const { ctx, width, height } = resizeCanvas('c5-canvas');
+            let lines = [];
+
+            // Pre-seed
+            for (let i = 0; i < 10; i++) lines.push({ x: -i * 100, y: 50 + Math.random() * (height - 100), w: 50 + Math.random() * 100, type: Math.random() > 0.7 ? 'good' : 'bad' });
+
+            function draw() {
+                if (!document.getElementById('chapter-5').classList.contains('active')) return;
+
+                ctx.clearRect(0, 0, width, height);
+
+                // Add new
+                if (Math.random() < 0.05) {
+                    lines.push({ x: -50, y: 50 + Math.random() * (height - 100), w: 50 + Math.random() * 100, type: Math.random() > 0.7 ? 'good' : 'bad' });
+                }
+
+                for (let i = 0; i < lines.length; i++) {
+                    let l = lines[i];
+                    l.x += 2;
+
+                    // Filter Effect: "Bad" lines fade out or stay grey, "Good" light up
+                    if (l.type === 'good') {
+                        ctx.fillStyle = '#06b6d4';
+                        if (l.x > width / 2) ctx.fillStyle = '#22d3ee'; // Processed
+                    } else {
+                        ctx.fillStyle = '#334155';
+                        if (l.x > width / 2) ctx.globalAlpha = 0.2; // Filtered out
+                    }
+
+                    ctx.fillRect(l.x, l.y, l.w, 4);
+                    ctx.globalAlpha = 1;
+
+                    if (l.x > width) {
+                        lines.splice(i, 1);
+                        i--;
+                    }
+                }
+
+                // Draw "Filter" Line in middle
+                ctx.strokeStyle = '#fff';
+                ctx.setLineDash([5, 5]);
+                ctx.beginPath(); ctx.moveTo(width / 2, 0); ctx.lineTo(width / 2, height); ctx.stroke();
+                ctx.setLineDash([]);
+
+                requestAnimationFrame(draw);
+            }
+            draw();
+        }
+
+        // Final: System Integration
+        function animFinal() {
+            const { ctx, width, height } = resizeCanvas('final-canvas');
+            let angle = 0;
+
+            function draw() {
+                if (!document.getElementById('closing').classList.contains('active')) return;
+
+                ctx.clearRect(0, 0, width, height);
+
+                const cx = width / 2;
+                const cy = height / 2;
+                const radius = 80;
+
+                // Center Core
+                ctx.fillStyle = '#fff';
+                ctx.beginPath(); ctx.arc(cx, cy, 20, 0, Math.PI * 2); ctx.fill();
+
+                // Orbiting items (The 5 chapters)
+                let colors = ['#3b82f6', '#8b5cf6', '#10b981', '#f59e0b', '#06b6d4'];
+                for (let i = 0; i < 5; i++) {
+                    let a = angle + (i * (Math.PI * 2) / 5);
+                    let x = cx + Math.cos(a) * radius;
+                    let y = cy + Math.sin(a) * radius;
+
+                    // Connector
+                    ctx.strokeStyle = colors[i];
+                    ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(x, y); ctx.stroke();
+
+                    // Node
+                    ctx.fillStyle = colors[i];
+                    ctx.beginPath(); ctx.arc(x, y, 10, 0, Math.PI * 2); ctx.fill();
+                }
+
+                angle += 0.01;
+                requestAnimationFrame(draw);
+            }
+            draw();
+        }
+
+
+        // Manually init animations if needed, but Observer handles it.
+        window.onload = () => {
+            // Initial draw needed for background
+            drawBg();
+        }
+
+    </script>
+</body>
+
+</html>

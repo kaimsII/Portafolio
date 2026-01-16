@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema Visual de Automatización | Python + Excel</title>
+    <!-- Fonts: Inter for UI, Robotic Mono for code/logs -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="logo-area">
+                <div class="python-logo">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M9.585 11.692h4.328s2.432.039 2.432-2.35V5.391S16.714 3 11.936 3C7.362 3 7.647 3 7.647 3L7.641 5.115h4.352v.616H7.647s-3.273-.372-3.273 4.67c0 5.041 2.843 4.86 2.843 4.86h1.695v-2.264s-.092-2.305 2.673-2.305zM9.5 4.691c-.447 0-.81-.362-.81-.809 0-.446.363-.808.81-.808.446 0 .808.362.808.808 0 .447-.362.809-.808.809z"
+                            fill="#3776ab" />
+                        <path
+                            d="M14.415 12.308h-4.328s-2.432-.039-2.432 2.35v3.951S7.286 21 12.064 21c4.574 0 4.289 0 4.289 0l.006-2.115h-4.352v-.616h4.346s3.273.372 3.273-4.67c0-5.041-2.843-4.86-2.843-4.86h-1.695v2.264s.092 2.305-2.673 2.305zm.085 7.001c.447 0 .81.362.81.809 0 .446-.363.808-.81.808-.446 0-.808-.362-.808-.808 0-.447.362-.809.808-.809z"
+                            fill="#ffd43b" />
+                    </svg>
+                </div>
+                <div class="title-text">
+                    <h1><span class="python-text">Python</span> + Excel</h1>
+                    <span class="subtitle">Automatización Profesional de Hojas de Cálculo</span>
+                </div>
+            </div>
+            <div class="python-badge">
+                <div class="badge-content">
+                    <span class="badge-label">Motor de Automatización</span>
+                    <span class="badge-status"><span class="status-dot"></span>Activo</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Automation Banner -->
+        <div class="automation-banner">
+            <div class="banner-content">
+                <span class="banner-icon">▶</span>
+                <span class="banner-text">Procesamiento automático: <strong>Limpieza → Formato →
+                        Análisis</strong></span>
+            </div>
+        </div>
+
+        <!-- Main Content Split -->
+        <main class="main-workspace">
+
+            <!-- Left: Terminal / Script Log -->
+            <section class="script-panel">
+                <div class="panel-header">
+                    <span>TERMINAL DE AUTOMATIZACIÓN</span>
+                    <div class="dots">
+                        <span class="dot red"></span>
+                        <span class="dot yellow"></span>
+                        <span class="dot green"></span>
+                    </div>
+                </div>
+
+                <!-- Efficiency Comparison Panel -->
+                <div class="efficiency-panel">
+                    <div class="panel-title">COMPARATIVA DE EFICIENCIA</div>
+                    <div class="efficiency-grid">
+                        <div class="efficiency-row">
+                            <div class="method-label manual-label">Proceso Manual</div>
+                            <div class="method-label python-label">Con Python</div>
+                        </div>
+                        <div class="efficiency-row">
+                            <div class="stat-box manual-stat">
+                                <div class="stat-value" id="manual-time">1:15 h</div>
+                                <div class="stat-label">Tiempo requerido</div>
+                            </div>
+                            <div class="stat-box python-stat">
+                                <div class="stat-value" id="python-time">0.55 s</div>
+                                <div class="stat-label">Tiempo requerido</div>
+                            </div>
+                        </div>
+                        <div class="efficiency-row">
+                            <div class="stat-box manual-stat">
+                                <div class="stat-value error-value" id="error-count-manual">15</div>
+                                <div class="stat-label">Errores probables</div>
+                            </div>
+                            <div class="stat-box python-stat">
+                                <div class="stat-value success-value">0</div>
+                                <div class="stat-label">Errores probables</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="efficiency-footer">
+                        <span class="footer-icon">→</span>
+                        <span class="footer-text">Python automatiza tareas repetitivas con <strong>precisión
+                                absoluta</strong></span>
+                        <button id="btn-restart" class="btn-restart" title="Reiniciar Simulación">↺</button>
+                    </div>
+                </div>
+
+                <!-- Log Container -->
+                <div class="log-container" id="terminal-log">
+                    <div class="log-entry system">> Inicializando entorno Python...</div>
+                    <div class="log-entry system">> Cargando librería 'pandas' as pd...</div>
+                    <div class="log-entry system">> Cargando librería 'openpyxl'...</div>
+                    <div class="log-entry ready">> Esperando archivo origen...</div>
+                </div>
+
+                <div class="progress-bar-container">
+                    <div class="progress-bar" id="progress-bar"></div>
+                </div>
+            </section>
+
+            <!-- Right: Spreadsheet Visual -->
+            <section class="sheet-viewport">
+                <!-- Action Card Overlay -->
+                <div id="action-overlay" class="action-overlay hidden">
+                    <div class="action-card">
+                        <div class="action-header">
+                            <span class="py-label">PYTHON</span>
+                            <span id="action-title">Limpieza de Datos</span>
+                        </div>
+                        <div class="action-body">
+                            <div class="code-block">
+                                <span class="code-keyword">df</span>.<span class="code-func"
+                                    id="action-code">drop_duplicates()</span>
+                            </div>
+                            <p class="action-desc" id="action-desc">Eliminando filas repetidas automáticamente.</p>
+                            <div class="comparison">
+                                <span class="comp-item human">Manual: 15 min</span>
+                                <span class="arrow">→</span>
+                                <span class="comp-item bot">Python: 0.01 s</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab bar -->
+                <div class="sheet-tabs">
+                    <div class="tab active" id="tab-raw">Datos_Brutos</div>
+                    <div class="tab" id="tab-clean">Datos_Limpios</div>
+                    <div class="tab" id="tab-summary">Reporte_Final</div>
+                </div>
+
+                <!-- Toolbar Mock -->
+                <div class="toolbar-mock">
+                    <div class="tool-group">
+                        <span class="tool-icon">📋</span>
+                        <span class="tool-icon">🖌️</span>
+                        <span class="tool-icon">∑</span>
+                    </div>
+                    <div class="formula-bar">
+                        <span class="fx">fx</span>
+                        <input type="text" class="formula-input" value="" readonly id="formula-bar">
+                    </div>
+                </div>
+
+                <!-- The Grid -->
+                <div class="grid-container" id="spreadsheet-grid">
+                    <!-- Javascript will inject cells here -->
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

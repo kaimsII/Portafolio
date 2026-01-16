@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Pacientes - Clínica Python (Demo Capítulo 5)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Fira+Code:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header class="app-header">
+        <div class="logo-area">
+            <div class="logo-icon">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M19 3H5C3.89543 3 3 3.89543 3 5V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V5C21 3.89543 20.1046 3 19 3Z"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M12 8V16" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                    <path d="M8 12H16" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+            </div>
+            <h1>Clínica Python <span class="sub-title">Gestión de Datos de Pacientes</span></h1>
+        </div>
+        <div class="chapter-info">
+            <span class="chapter-label">CAPÍTULO 5</span>
+            <span class="chapter-title">Gestión de Archivos CSV</span>
+        </div>
+    </header>
+
+    <main class="main-stage">
+
+        <!-- Left Panel: Narrative & Context -->
+        <section class="panel narrative-panel">
+            <div class="narrative-content">
+                <h2 id="step-title">Bienvenido</h2>
+                <p id="step-description">Iniciando sistema de gestión...</p>
+                <div class="explanation-box" id="explanation-box">
+                    <div class="explanation-header">
+                        <span class="info-dot">i</span> NOTA
+                    </div>
+                    <p id="explanation-msg">Cargando...</p>
+                </div>
+            </div>
+            <div class="progress-container">
+                <div class="progress-bar" id="progress-bar"></div>
+            </div>
+        </section>
+
+        <!-- Center Panel: Python Code Simulation -->
+        <section class="panel code-panel">
+            <div class="panel-header">
+                <span class="file-tab">script_procesamiento.py</span>
+                <span class="lang-badge">Python 3.10</span>
+            </div>
+            <div class="code-editor" id="code-editor">
+                <pre><code id="code-display"># Esperando instrucciones...</code></pre>
+            </div>
+        </section>
+
+        <!-- Right Panel: Data Visualization (File System / Memory) -->
+        <section class="panel visual-panel">
+            <div class="visual-header">Simulación de Datos</div>
+
+            <div class="visual-stage" id="visual-stage">
+                <!-- Dynamic Content Here (Tables, File Icons, etc) -->
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="app-footer">
+        <div class="status-bar">
+            <button id="pause-btn" class="control-btn">⏸ Pausar</button>
+            <span>Estado: <span id="system-status">En línea</span></span>
+            <span>Modo: <span id="system-mode">Demonstración Automática</span></span>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Capítulo 1: Fundamentos de Python aplicados a Hojas de Cálculo</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            /* Palette matched to main project */
+            --bg-dark: #0f172a;
+            --bg-card: #1e293b;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent-blue: #3b82f6;
+            /* Python/Tech */
+            --accent-green: #10b981;
+            /* Excel/Success */
+            --accent-purple: #8b5cf6;
+            /* Logic/Process */
+            --border-color: #334155;
+            --grid-line: #475569;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        /* Layout Grid */
+        .wrapper {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            width: 100%;
+            max-width: 1400px;
+            height: 800px;
+            /* Fixed height for consistency */
+            gap: 2rem;
+            padding: 2rem;
+        }
+
+        /* Sidebar Narrative */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .chapter-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 2rem;
+            background: linear-gradient(to right, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .step-list {
+            list-style: none;
+            position: relative;
+        }
+
+        /* Connecting Line */
+        .step-list::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            bottom: 30px;
+            left: 14px;
+            width: 2px;
+            background: #334155;
+            z-index: 0;
+        }
+
+        .step-item {
+            margin-bottom: 2rem;
+            position: relative;
+            padding-left: 3rem;
+            z-index: 1;
+            opacity: 0.3;
+            /* Inactive state */
+            transition: all 0.5s ease;
+        }
+
+        .step-item.active {
+            opacity: 1;
+            transform: translateX(10px);
+        }
+
+        .step-marker {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 30px;
+            height: 30px;
+            background: var(--bg-dark);
+            border: 2px solid #334155;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--text-secondary);
+            transition: all 0.3s;
+        }
+
+        .step-item.active .step-marker {
+            border-color: var(--accent-blue);
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--accent-blue);
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
+        }
+
+        .step-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            color: var(--text-primary);
+        }
+
+        .step-desc {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        /* Main Visualization Area */
+        .main-view {
+            position: relative;
+            background: rgba(30, 41, 59, 0.3);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            /* Contains floating elements */
+            perspective: 1000px;
+        }
+
+        /* --- VISUAL COMPONENTS --- */
+
+        /* 1.1 IDE Row */
+        .ide-row {
+            position: absolute;
+            top: 15%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 280px;
+            height: 200px;
+            opacity: 0;
+            transition: all 0.8s;
+            z-index: 10;
+        }
+
+        .ide-logo {
+            position: absolute;
+            width: 65px;
+            height: 65px;
+            filter: grayscale(100%);
+            opacity: 0.5;
+            transition: all 0.5s;
+        }
+
+        /* Diamond positioning - Top vertex */
+        #logo-vscode {
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        /* Diamond positioning - Left vertex */
+        #logo-colab {
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+        }
+
+        /* Diamond positioning - Right vertex */
+        #logo-cursor {
+            top: 50%;
+            right: 0;
+            transform: translateY(-50%);
+        }
+
+        /* Diamond positioning - Bottom vertex */
+        #logo-anti {
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .ide-row.active {
+            opacity: 1;
+            top: 15%;
+            /* Float up just a bit */
+        }
+
+        .ide-logo.selected {
+            filter: grayscale(0%);
+            opacity: 1;
+            transform: scale(1.2);
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.2));
+        }
+
+        /* 1.2 Terminal */
+        .terminal-window {
+            position: absolute;
+            width: 480px;
+            height: 280px;
+            background: #000;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            z-index: 50;
+            font-family: 'JetBrains Mono', monospace;
+            opacity: 0;
+            transform: translateY(20px) scale(0.9);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            pointer-events: none;
+        }
+
+        .terminal-window.active {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        .term-header {
+            height: 32px;
+            background: #1e293b;
+            display: flex;
+            align-items: center;
+            padding: 0 12px;
+            gap: 8px;
+            border-bottom: 1px solid #334155;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        /* Terminal CSS Update */
+        .term-body {
+            padding: 1.5rem;
+            color: #f8fafc;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            white-space: pre-wrap;
+            /* Preserve spaces and line breaks */
+            overflow-y: hidden;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 8px;
+            height: 16px;
+            background: #f8fafc;
+            animation: blink 1s infinite;
+            vertical-align: middle;
+            margin-left: 2px;
+        }
+
+        @keyframes blink {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0;
+            }
+        }
+
+        /* 1.3/1.4 Code & Spreadsheet Layout */
+        .workspace {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            opacity: 0;
+            transition: all 0.8s;
+            transform: scale(0.95);
+        }
+
+        .workspace.active {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* Code Block */
+        .code-block {
+            width: 400px;
+            background: #0f172a;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        .code-line {
+            margin-bottom: 0.5rem;
+            opacity: 0.3;
+            transition: opacity 0.3s;
+            white-space: pre;
+        }
+
+        .code-line.active {
+            opacity: 1;
+            font-weight: bold;
+            background: rgba(59, 130, 246, 0.1);
+            border-radius: 4px;
+        }
+
+        .keyword {
+            color: var(--accent-purple);
+        }
+
+        .string {
+            color: var(--accent-green);
+        }
+
+        .func {
+            color: var(--accent-blue);
+        }
+
+        /* Spreadsheet */
+        .spreadsheet-container {
+            width: 450px;
+            height: 320px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+            transition: all 0.5s;
+        }
+
+        .sheet-header {
+            height: 30px;
+            background: #0f172a;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            padding: 0 10px;
+            gap: 6px;
+        }
+
+        .filename {
+            margin-left: auto;
+            margin-right: 10px;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .grid {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 40px repeat(4, 1fr);
+            grid-template-rows: 30px repeat(6, 1fr);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+        }
+
+        .cell {
+            border-right: 1px solid var(--grid-line);
+            border-bottom: 1px solid var(--grid-line);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .col-header,
+        .row-header {
+            background: #182030;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .data-cell {
+            background: transparent;
+            opacity: 0;
+            transform: scale(0.9);
+            transition: all 0.3s ease-out;
+        }
+
+        .data-cell.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .data-cell.highlight {
+            background: rgba(139, 92, 246, 0.2);
+            color: var(--accent-purple);
+            border: 1px solid var(--accent-purple);
+            z-index: 2;
+        }
+
+        .data-cell.modified {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--accent-green);
+        }
+
+        /* File Transfer Icons */
+        .file-icon {
+            position: absolute;
+            width: 60px;
+            height: 80px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            color: #0f172a;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            z-index: 100;
+            font-size: 1rem;
+            opacity: 0;
+            transition: all 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .file-icon.source {
+            background: #cbd5e1;
+            left: 50%;
+            top: 50%;
+        }
+
+        .file-icon.dest {
+            background: var(--accent-green);
+            left: 50%;
+            top: 50%;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="wrapper">
+
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <h1 class="chapter-title">Capítulo 1:<br>Fundamentos</h1>
+            <ul class="step-list">
+                <li class="step-item" id="step-1">
+                    <div class="step-marker">1.1</div>
+                    <div class="step-title">Entorno de Trabajo</div>
+                    <div class="step-desc">Configuración en VS Code y herramientas de asistencia.</div>
+                </li>
+                <li class="step-item" id="step-2">
+                    <div class="step-marker">1.2</div>
+                    <div class="step-title">Instalación</div>
+                    <div class="step-desc">Bibliotecas `pandas` y `openpyxl`.</div>
+                </li>
+                <li class="step-item" id="step-3">
+                    <div class="step-marker">1.3</div>
+                    <div class="step-title">Importación/Exportación</div>
+                    <div class="step-desc">Lectura de archivos Excel hacia Python.</div>
+                </li>
+                <li class="step-item" id="step-4">
+                    <div class="step-marker">1.4</div>
+                    <div class="step-title">Gestión de Datos</div>
+                    <div class="step-desc">Manipulación de celdas, rangos y escritura.</div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Main View -->
+        <div class="main-view">
+
+            <!-- 1.1 Logos -->
+            <!-- 1.1 Logos -->
+            <div class="ide-row" id="ide-row">
+                <!-- VS Code -->
+                <img class="ide-logo" id="logo-vscode"
+                    src="https://upload.wikimedia.org/wikipedia/commons/9/9a/Visual_Studio_Code_1.35_icon.svg"
+                    alt="VS Code">
+
+                <!-- Google Colab (User Provided) -->
+                <img class="ide-logo" id="logo-colab"
+                    src="https://upload.wikimedia.org/wikipedia/commons/9/9b/Google_Colab_pic.png" alt="Colab">
+
+                <!-- Cursor -->
+                <img class="ide-logo" id="logo-cursor" src="https://static.cdnlogo.com/logos/c/23/cursor.svg"
+                    alt="Cursor" style="background: white; border-radius: 50%;">
+
+                <!-- Antigravity (Google Antigravity - User Provided) -->
+                <img class="ide-logo" id="logo-anti"
+                    src="https://i.namu.wiki/i/kARx1nP9GHaTktx_4yTI4HXLOjmd3JZaKJkHTXgE2bv4UATWXkVlvoE6ktFO4MFI6yMcV50x6z-pisOEDBOUOQ.webp"
+                    alt="Antigravity" style="border-radius: 50%;">
+            </div>
+
+            <!-- 1.2 Terminal -->
+            <div id="terminal" class="terminal-window">
+                <div class="term-header">
+                    <div class="dot" style="background:#ef4444"></div>
+                    <div class="dot" style="background:#f59e0b"></div>
+                    <div class="dot" style="background:#22c55e"></div>
+                    <span style="color:#64748b; font-size: 0.8rem; margin-left:8px;">Terminal</span>
+                </div>
+                <div class="term-body">
+                    <div id="term-lines"></div><span class="cursor">_</span>
+                </div>
+            </div>
+
+            <!-- 1.3/1.4 Workspace -->
+            <div id="workspace" class="workspace">
+
+                <!-- Code -->
+                <div id="code-panel" class="code-block">
+                    <div class="code-line" id="ln-1"><span class="keyword">import</span> pandas <span
+                            class="keyword">as</span> pd</div>
+                    <div class="code-line" id="ln-2"></div>
+                    <div class="code-line" id="ln-3"><span class="func"># 1. Lectura</span></div>
+                    <div class="code-line" id="ln-4">df = pd.read_excel(<span class="string">'data.xlsx'</span>)</div>
+                    <div class="code-line" id="ln-5"></div>
+                    <div class="code-line" id="ln-6"><span class="func"># 2. Gestión (Cálculo)</span></div>
+                    <div class="code-line" id="ln-7">df[<span class="string">'Total'</span>] = df[<span
+                            class="string">'Qty'</span>] * df[<span class="string">'Price'</span>]</div>
+                    <div class="code-line" id="ln-8"></div>
+                    <div class="code-line" id="ln-9"><span class="func"># 3. Escritura</span></div>
+                    <div class="code-line" id="ln-10">df.to_excel(<span class="string">'reporte.xlsx'</span>)</div>
+                </div>
+
+                <!-- Excel -->
+                <div id="spreadsheet" class="spreadsheet-container">
+                    <div class="sheet-header">
+                        <div class="dot" style="background:#ef4444"></div>
+                        <div class="dot" style="background:#f59e0b"></div>
+                        <div class="filename">data.xlsx</div>
+                    </div>
+                    <div class="grid" id="grid-content"></div>
+                </div>
+
+            </div>
+
+            <!-- Floating Files -->
+            <div id="file-source" class="file-icon source">XLSX</div>
+            <div id="file-dest" class="file-icon dest">XLSX</div>
+
+        </div>
+
+    </div>
+
+    <script>
+        // DOM Refs
+        const steps = [1, 2, 3, 4].map(i => document.getElementById(`step-${i}`));
+        const ideRow = document.getElementById('ide-row');
+        const logos = ['vscode', 'anti', 'cursor', 'colab'].map(id => document.getElementById(`logo-${id}`));
+        const terminal = document.getElementById('terminal');
+        const termLines = document.getElementById('term-lines');
+        const workspace = document.getElementById('workspace');
+        const codePanel = document.getElementById('code-panel');
+        const spreadsheet = document.getElementById('spreadsheet');
+        const grid = document.getElementById('grid-content');
+        const fileSource = document.getElementById('file-source');
+        const fileDest = document.getElementById('file-dest');
+
+        // Helpers
+        const wait = (ms) => new Promise(res => setTimeout(res, ms));
+        const setActiveStep = (idx) => {
+            steps.forEach((s, i) => s.classList.toggle('active', i === idx));
+        };
+        const highlightLine = (id) => {
+            document.querySelectorAll('.code-line').forEach(l => l.classList.remove('active'));
+            if (id) document.getElementById(id).classList.add('active');
+        };
+
+        // Grid Init
+        const initGrid = () => {
+            grid.innerHTML = '';
+            const headers = ['A', 'B', 'C', 'D'];
+            const data = [
+                ['Item', 'Qty', 'Price', 'Total'],
+                ['CPU', '2', '300', ''],
+                ['RAM', '4', '80', ''],
+                ['SSD', '10', '50', ''],
+                ['GPU', '1', '600', '']
+            ];
+
+            // Corner
+            grid.appendChild(createCell('cell col-header', ''));
+            // Cols
+            headers.forEach(h => grid.appendChild(createCell('cell col-header', h)));
+            // Rows
+            for (let r = 0; r < 5; r++) {
+                grid.appendChild(createCell('cell row-header', r + 1));
+                for (let c = 0; c < 4; c++) {
+                    const cell = createCell('cell data-cell', '');
+                    cell.dataset.r = r; cell.dataset.c = c;
+
+                    if (r < data.length) {
+                        cell.innerText = data[r][c];
+                        if (r === 0) cell.style.fontWeight = 'bold';
+                    }
+                    grid.appendChild(cell);
+                }
+            }
+        };
+
+        const createCell = (cls, txt) => {
+            const d = document.createElement('div');
+            d.className = cls;
+            d.innerText = txt;
+            return d;
+        };
+
+        // --- MASTER SEQUENCE ---
+        async function runSequence() {
+            // Reset
+            ideRow.classList.remove('active');
+            terminal.classList.remove('active');
+            workspace.classList.remove('active');
+            termLines.innerHTML = '';
+            logos.forEach(l => l.classList.remove('selected'));
+            fileSource.style.opacity = 0; fileSource.style.transform = 'translate(-50%, -50%) scale(0)';
+            fileDest.style.opacity = 0; fileDest.style.transform = 'translate(-50%, -50%) scale(0)';
+            initGrid(); // Clear data cells hidden via CSS opacity
+
+            await wait(500);
+
+            // --- STEP 1.1: ENTORNO ---
+            setActiveStep(0);
+            ideRow.classList.add('active');
+
+            // Cycle thru logos to show "Choice"
+            for (let i = 0; i < logos.length; i++) {
+                logos[i].classList.add('selected');
+                await wait(400);
+                logos[i].classList.remove('selected');
+            }
+            // Select VS Code as winner
+            logos[0].classList.add('selected');
+            await wait(1500);
+
+            ideRow.classList.remove('active'); // Fade out
+            await wait(500);
+
+
+            // --- STEP 1.2: INSTALACIÓN ---
+            setActiveStep(1);
+            terminal.classList.add('active');
+            await wait(500);
+
+            // Show plain clean command (no typing simulation implies instant or block appearance, but user said 'no quiero que se ejecute', maybe just show static text)
+            // "no quiero que se ejecute el comando, solo quiero que sse vean las instrucciones de manera ordenada"
+            termLines.innerHTML = "<span style='opacity:0.7'>$</span> pip install pandas openpyxl";
+            await wait(1500);
+
+            // Show success message cleanly
+            termLines.innerHTML += "<br><br><span style='color:#10b981'>Successfully installed:</span><br>+ pandas<br>+ openpyxl";
+
+            await wait(2500);
+
+            terminal.classList.remove('active');
+            await wait(500);
+
+
+            // --- STEP 1.3: IMPORTACIÓN ---
+            setActiveStep(2);
+            workspace.classList.add('active');
+
+            // 1. Source appears
+            fileSource.style.opacity = 1;
+            fileSource.style.transform = 'translate(-350px, -50%) scale(1)'; // Left of workspace
+            await wait(800);
+
+            // 2. Read Code Highlight
+            highlightLine('ln-1');
+            await wait(500);
+            highlightLine('ln-4');
+
+            // 3. File moves INTO Code
+            // Calculate center of code block roughly (relative to stage)
+            // Just move it rightwards to "merge" with code
+            fileSource.style.transform = 'translate(-100px, -50%) scale(0.5)';
+            fileSource.style.opacity = 0;
+            await wait(600);
+
+            // 4. Spreadsheet Fills (Result of Import)
+            const cells = document.querySelectorAll('.data-cell');
+            cells.forEach(c => c.classList.add('visible')); // Bloom effect
+            await wait(1500);
+
+
+            // --- STEP 1.4: GESTIÓN (Processing) ---
+            setActiveStep(3);
+            highlightLine('ln-7');
+
+            // Calc Loop
+            const rowCount = 5;
+            for (let r = 1; r < rowCount; r++) {
+                const cellQty = document.querySelector(`.data-cell[data-r="${r}"][data-c="1"]`);
+                const cellPrc = document.querySelector(`.data-cell[data-r="${r}"][data-c="2"]`);
+                const cellTot = document.querySelector(`.data-cell[data-r="${r}"][data-c="3"]`);
+
+                // Highlight Inputs
+                cellQty.classList.add('highlight');
+                cellPrc.classList.add('highlight');
+                await wait(200);
+
+                // Compute
+                const q = parseInt(cellQty.innerText);
+                const p = parseInt(cellPrc.innerText);
+                cellTot.innerText = q * p;
+                cellTot.classList.add('visible', 'modified'); // Ensure visible
+
+                await wait(100);
+                cellQty.classList.remove('highlight');
+                cellPrc.classList.remove('highlight');
+            }
+            await wait(800);
+
+            // Export Phase
+            highlightLine('ln-10');
+            await wait(500);
+
+            // Spreadsheet scales down
+            // workspace.style.transform = 'scale(0.9)'; // Subtle squeeze
+
+            // New File Pops out
+            fileDest.style.opacity = 1;
+            fileDest.style.transform = 'translate(-100px, -50%) scale(0)'; // Start inside
+            await wait(50);
+            fileDest.style.transform = 'translate(150px, -50%) scale(1.1)'; // Pop right
+
+            await wait(3000);
+
+            // Restart
+            runSequence();
+        }
+
+        window.onload = runSequence;
+
+    </script>
+</body>
+
+</html>
