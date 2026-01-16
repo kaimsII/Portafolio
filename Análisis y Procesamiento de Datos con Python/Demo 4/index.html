@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explorador Visual de Datos - Python Demo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Roboto+Mono&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="main-container">
+        <header>
+            <div>
+                <h1>Explorador Visual de Datos</h1>
+                <div class="sub-header">Análisis y Procesamiento Automatizado con Python</div>
+            </div>
+        </header>
+
+        <div class="narrative-box" id="narrative-box">
+            <div class="chapter-title" id="chapter-id">INICIO</div>
+            <div class="narrative-text" id="narrative-main">Preparando entorno de visualización...</div>
+            <div class="advantage-highlight" id="narrative-adv"></div>
+        </div>
+
+        <!-- Main Content Area: Split View -->
+        <div class="content-row">
+            <!-- Left: Visualization Stage -->
+            <div class="stage" id="stage">
+                <!-- Phase 1: Data Grid -->
+                <div id="data-container" class="data-grid"></div>
+
+                <!-- Phase 2: Stats Panel -->
+                <div id="stats-container" class="stats-panel">
+                    <div class="stat-card">
+                        <div class="stat-label">Total Registros</div>
+                        <div class="stat-value" id="stat-count">0</div>
+                        <div style="font-size:0.7rem; color:var(--accent-blue);">Procesado ok</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Ventas Totales</div>
+                        <div class="stat-value" id="stat-sum">$0</div>
+                        <div style="font-size:0.7rem; color:var(--accent-green);">Alta rentabilidad</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Ticket Promedio</div>
+                        <div class="stat-value" id="stat-avg">$0</div>
+                        <div style="font-size:0.7rem; color:var(--accent-orange);">+12% vs mes ant.</div>
+                    </div>
+                </div>
+
+                <!-- Phase 3: Charts -->
+                <div id="charts-container" class="charts-container"></div>
+
+                <!-- Phase 4: AI Overlay -->
+                <div id="ai-overlay" class="ai-terminal">
+                    <div class="ai-header">
+                        <div class="ai-icon"></div>
+                        Python AI Assistant
+                    </div>
+                    <div class="ai-content">
+                        <span id="ai-text"></span><span class="cursor"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Code Panel (Sidebar) -->
+            <div class="code-panel">
+                <div class="code-header">PYTHON SOURCE EXECUTION</div>
+                <div class="code-content" id="code-content">
+                    <span style="color: #666"># Esperando ejecución...</span>
+                </div>
+                <!-- Status Indicator -->
+                <div class="execution-status">
+                    <div class="status-light"></div>
+                    RUNNING
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
