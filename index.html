@@ -25,9 +25,7 @@
       <div class="hero-left">
         <h1 class="hero-name fade-in">Kevin Dominich</h1>
         <h2 class="hero-title fade-in">Cloud & AI Instructor</h2>
-        <p class="hero-description fade-in">
-          Diseño e imparto formaciones técnicas en Cloud e Inteligencia Artificial orientadas a resultados reales.
-        </p>
+
 
         <!-- Navigation -->
         <nav class="main-nav">
@@ -35,10 +33,7 @@
             <span class="nav-line"></span>
             <span class="nav-text">Sobre mí</span>
           </a>
-          <a href="#experience" class="nav-link">
-            <span class="nav-line"></span>
-            <span class="nav-text">Experiencia</span>
-          </a>
+
 
           <a href="#certifications" class="nav-link">
             <span class="nav-line"></span>
@@ -88,6 +83,18 @@
             <polyline points="22,6 12,13 2,6"></polyline>
           </svg>
         </a>
+        <a href="CV - Formato Harvard.docx.pdf" target="_blank" rel="noopener noreferrer" aria-label="CV (PDF)"
+          class="cv-link" style="display: flex; align-items: center; text-decoration: none; color: inherit;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+            <line x1="16" y1="13" x2="8" y2="13"></line>
+            <line x1="16" y1="17" x2="8" y2="17"></line>
+            <polyline points="10 9 9 9 8 9"></polyline>
+          </svg>
+          <span style="margin-left: 8px; font-weight: 600; font-size: 14px;">CV (PDF)</span>
+        </a>
       </div>
     </div>
 
@@ -99,295 +106,210 @@
         <div class="about-content">
           <div class="about-text">
             <p>
-              Soy instructor certificado por Microsoft y Netec, especializado en Inteligencia Artificial y desarrollo
-              seguro de aplicaciones. Apoyo a las organizaciones en la adopción de tecnologías cloud mediante programas
-              de capacitación alineados a objetivos de negocio, enfocados en productividad, eficiencia operativa y
-              optimización de costos.
-            </p>
-            <p>
-              Cuento con experiencia trabajando con equipos técnicos y áreas corporativas para implementar formación
-              estructurada que reduce riesgos de seguridad y mejora el uso estratégico de la nube. Desarrollo material
-              propio y laboratorios prácticos, y también imparto capacitación basada en contenido oficial proporcionado
-              por fabricantes y socios tecnológicos como Microsoft, GitHub, AWS, entre otros, adaptándolo al contexto y
-              necesidades de cada empresa para asegurar resultados medibles y aplicables en el entorno laboral.
-            </p>
-            <p>
-              Actualmente formo parte de <a href="https://www.netec.com" class="inline-link" target="_blank">Netec</a>,
-              donde imparto cursos, seminarios y programas a medida. He participado en la definición de la postura de
-              seguridad de una de sus plataformas educativas, optimizando recursos cloud y diseñando contenido
-              especializado para clientes corporativos, con altos niveles de satisfacción y mejoras comprobables en
-              certificación y desempeño técnico.
+              Instructor certificado por Microsoft y Netec, especializado en Inteligencia Artificial y desarrollo
+              seguro de aplicaciones. Diseño e imparto capacitaciones cloud tanto con contenido oficial de fabricantes
+              (Microsoft, AWS, GitHub) como programas personalizados para clientes, orientados a productividad,
+              seguridad
+              y resultados medibles.
             </p>
           </div>
         </div>
       </section>
 
-      <!-- Experience Section -->
-      <section id="experience" class="section experience-section">
-        <div class="experience-content">
-          <div class="job">
-            <div class="job-year">2022 — PRESENTE</div>
-            <div class="job-details">
-              <div class="company-logo">
-                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 200 60">
-                  <rect width="200" height="60" fill="#0052CC" />
-                  <text x="20" y="42" font-family="Arial, sans-serif" font-size="32" font-weight="bold"
-                    fill="white">NETEC</text>
-                </svg>
-              </div>
-              <h3 class="job-title">
-                Instructor · <a href="https://www.netec.com" class="inline-link" target="_blank">Netec</a>
-              </h3>
-              <p class="job-description-text">
-                Desarrollo de cursos personalizados para clientes con requerimientos específicos, ajustando tanto la
-                metodología de enseñanza como los laboratorios prácticos para asegurar su correcta aplicación en el
-                entorno real. Elaboración de diversas agendas temáticas que permitieron alinear las necesidades del
-                cliente con el equipo de preventa. Impartición de seminarios en distintas áreas, con una participación
-                superior a 400 asistentes. Definición de la estrategia de seguridad de una de las plataformas educativas
-                de Netec, logrando un uso más eficiente de la infraestructura y una disminución de los costos en la nube
-                sin afectar la confidencialidad ni la integridad de la información.
-              </p>
-              <ul class="job-tech">
-                <li>Azure AI</li>
-                <li>Python</li>
-                <li>GitHub Security</li>
-                <li>Microsoft 365</li>
-                <li>AWS</li>
-                <li>Cloud Security</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
+
 
 
 
       <!-- Certifications Section -->
       <section id="certifications" class="section projects-section">
-        <div class="projects-grid">
-          <div class="project-card">
-            <div class="project-content">
+        <h2 class="section-title">Certificaciones</h2>
+        <div class="cert-grid">
+          <!-- Azure Developer Associate -->
+          <div class="cert-card" onclick="openCertModal(this)">
+            <div class="cert-visible">
               <div class="cert-logo">
-                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 23 23">
-                  <path fill="#f25022" d="M0 0h11v11H0z" />
-                  <path fill="#00a4ef" d="M12 0h11v11H12z" />
-                  <path fill="#7fba00" d="M0 12h11v11H0z" />
-                  <path fill="#ffb900" d="M12 12h11v11H12z" />
-                </svg>
+                <img src="azure-developer-associate.png" alt="Azure Developer Associate">
               </div>
-              <p class="project-overline">Microsoft</p>
-              <h3 class="project-title">Azure Developer Associate</h3>
-              <div class="project-description">
-                <p>
-                  Certificación para diseño, construcción, prueba y mantenimiento de aplicaciones y servicios en la nube
-                  en Microsoft Azure.
-                </p>
-              </div>
-              <ul class="project-tech">
+              <p class="cert-issuer">Microsoft</p>
+              <h3 class="cert-name">Azure Developer Associate</h3>
+            </div>
+            <div class="cert-details-hidden" style="display: none;">
+              <p class="cert-description">
+                Certificación para diseño, construcción, prueba y mantenimiento de aplicaciones y servicios en la nube
+                en Microsoft Azure.
+              </p>
+              <ul class="cert-tags">
                 <li>Azure</li>
                 <li>Cloud Development</li>
                 <li>DevOps</li>
               </ul>
-              <p class="job-date">Expedición: Agosto 2025</p>
+              <p class="cert-date">Expedición: Agosto 2025</p>
             </div>
           </div>
 
-          <div class="project-card">
-            <div class="project-content">
+          <!-- GitHub Advanced Security -->
+          <div class="cert-card" onclick="openCertModal(this)">
+            <div class="cert-visible">
               <div class="cert-logo">
-                <img src="github-advanced-security.svg" alt="GitHub Advanced Security" width="40" height="40"
-                  class="cert-icon">
+                <img src="github-advanced-security.svg" alt="GitHub Advanced Security">
               </div>
-              <p class="project-overline">Microsoft</p>
-              <h3 class="project-title">GitHub Advanced Security</h3>
-              <div class="project-description">
-                <p>
-                  Especialización en seguridad avanzada de GitHub, incluyendo análisis de código, detección de secretos
-                  y gestión de dependencias vulnerables.
-                </p>
-              </div>
-              <ul class="project-tech">
+              <p class="cert-issuer">Microsoft</p>
+              <h3 class="cert-name">GitHub Advanced Security</h3>
+            </div>
+            <div class="cert-details-hidden" style="display: none;">
+              <p class="cert-description">
+                Especialización en seguridad avanzada de GitHub, incluyendo análisis de código, detección de secretos y
+                gestión de dependencias vulnerables.
+              </p>
+              <ul class="cert-tags">
                 <li>GitHub</li>
                 <li>Security</li>
                 <li>DevSecOps</li>
               </ul>
-              <p class="job-date">Expedición: Julio 2025</p>
+              <p class="cert-date">Expedición: Julio 2025</p>
             </div>
           </div>
 
-          <div class="project-card">
-            <div class="project-content">
+          <!-- PCPP1 -->
+          <div class="cert-card" onclick="openCertModal(this)">
+            <div class="cert-visible">
               <div class="cert-logo">
-                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 256 255">
-                  <defs>
-                    <linearGradient id="pyBlue" x1="12.959%" y1="12.039%" x2="79.639%" y2="78.201%">
-                      <stop offset="0%" style="stop-color:#387EB8" />
-                      <stop offset="100%" style="stop-color:#366994" />
-                    </linearGradient>
-                    <linearGradient id="pyYellow" x1="19.128%" y1="20.579%" x2="90.742%" y2="88.429%">
-                      <stop offset="0%" style="stop-color:#FFE052" />
-                      <stop offset="100%" style="stop-color:#FFC331" />
-                    </linearGradient>
-                  </defs>
-                  <path fill="url(#pyBlue)"
-                    d="M126.916.072c-64.832 0-60.784 28.115-60.784 28.115l.072 29.128h61.868v8.745H41.631S.145 61.355.145 126.77c0 65.417 36.21 63.097 36.21 63.097h21.61v-30.356s-1.165-36.21 35.632-36.21h61.362s34.475.557 34.475-33.319V33.97S194.67.072 126.916.072zM92.802 19.66a11.12 11.12 0 0 1 11.13 11.13 11.12 11.12 0 0 1-11.13 11.13 11.12 11.12 0 0 1-11.13-11.13 11.12 11.12 0 0 1 11.13-11.13z" />
-                  <path fill="url(#pyYellow)"
-                    d="M128.757 254.126c64.832 0 60.784-28.115 60.784-28.115l-.072-29.127H127.6v-8.745h86.441s41.486 4.705 41.486-60.712c0-65.416-36.21-63.096-36.21-63.096h-21.61v30.355s1.165 36.21-35.632 36.21h-61.362s-34.475-.557-34.475 33.32v56.013s-5.235 33.897 62.518 33.897zm34.114-19.586a11.12 11.12 0 0 1-11.13-11.13 11.12 11.12 0 0 1 11.13-11.131 11.12 11.12 0 0 1 11.13 11.13 11.12 11.12 0 0 1-11.13 11.13z" />
-                </svg>
+                <img src="pcpp1-certified-professional-python-programmer.png"
+                  alt="PCPP1 Certified Professional Python Programmer">
               </div>
-              <p class="project-overline">Python Institute</p>
-              <h3 class="project-title">PCPP1 - Certified Professional Python Programmer Level 1</h3>
-              <div class="project-description">
-                <p>
-                  Acredita profesionalmente la competencia avanzada en programación Python, incluyendo POO,
-                  procesamiento de archivos, y desarrollo de aplicaciones robustas y mantenibles.
-                </p>
-              </div>
-              <ul class="project-tech">
+              <p class="cert-issuer">Python Institute</p>
+              <h3 class="cert-name">PCPP1 - Certified Professional Python Programmer</h3>
+            </div>
+            <div class="cert-details-hidden" style="display: none;">
+              <p class="cert-description">
+                Acredita profesionalmente la competencia avanzada en programación Python, incluyendo POO, procesamiento
+                de archivos, y desarrollo de aplicaciones robustas y mantenibles.
+              </p>
+              <ul class="cert-tags">
                 <li>Python</li>
                 <li>OOP</li>
                 <li>Advanced Programming</li>
               </ul>
-              <p class="job-date">Expedición: Marzo 2025</p>
+              <p class="cert-date">Expedición: Marzo 2025</p>
             </div>
           </div>
 
-          <div class="project-card">
-            <div class="project-content">
+          <!-- Azure AI Engineer Associate -->
+          <div class="cert-card" onclick="openCertModal(this)">
+            <div class="cert-visible">
               <div class="cert-logo">
-                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 23 23">
-                  <path fill="#f25022" d="M0 0h11v11H0z" />
-                  <path fill="#00a4ef" d="M12 0h11v11H12z" />
-                  <path fill="#7fba00" d="M0 12h11v11H0z" />
-                  <path fill="#ffb900" d="M12 12h11v11H12z" />
-                </svg>
+                <img src="azure-ai-engineer-associate.png" alt="Azure AI Engineer Associate">
               </div>
-              <p class="project-overline">Microsoft</p>
-              <h3 class="project-title">Azure AI Engineer Associate</h3>
-              <div class="project-description">
-                <p>
-                  Valida conocimientos prácticos para diseñar, entrenar y desplegar soluciones de inteligencia
-                  artificial utilizando servicios de Microsoft Azure.
-                </p>
-              </div>
-              <ul class="project-tech">
+              <p class="cert-issuer">Microsoft</p>
+              <h3 class="cert-name">Azure AI Engineer Associate</h3>
+            </div>
+            <div class="cert-details-hidden" style="display: none;">
+              <p class="cert-description">
+                Valida conocimientos prácticos para diseñar, entrenar y desplegar soluciones de inteligencia artificial
+                utilizando servicios de Microsoft Azure.
+              </p>
+              <ul class="cert-tags">
                 <li>Azure AI</li>
                 <li>Machine Learning</li>
                 <li>Cognitive Services</li>
               </ul>
-              <p class="job-date">Expedición: Abril 2024</p>
+              <p class="cert-date">Expedición: Abril 2024</p>
             </div>
           </div>
 
-          <div class="project-card">
-            <div class="project-content">
+          <!-- Security, Compliance, and Identity Fundamentals -->
+          <div class="cert-card" onclick="openCertModal(this)">
+            <div class="cert-visible">
               <div class="cert-logo">
-                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 23 23">
-                  <path fill="#f25022" d="M0 0h11v11H0z" />
-                  <path fill="#00a4ef" d="M12 0h11v11H12z" />
-                  <path fill="#7fba00" d="M0 12h11v11H0z" />
-                  <path fill="#ffb900" d="M12 12h11v11H12z" />
-                </svg>
+                <img src="security-compliance-identity-fundamentals.png"
+                  alt="Security, Compliance, and Identity Fundamentals">
               </div>
-              <p class="project-overline">Microsoft</p>
-              <h3 class="project-title">Security, Compliance, and Identity Fundamentals</h3>
-              <div class="project-description">
-                <p>
-                  Fundamentos de seguridad, cumplimiento e identidad en servicios de Microsoft, incluyendo Azure AD,
-                  protección de información y gestión de amenazas.
-                </p>
-              </div>
-              <ul class="project-tech">
+              <p class="cert-issuer">Microsoft</p>
+              <h3 class="cert-name">Security, Compliance, and Identity Fundamentals</h3>
+            </div>
+            <div class="cert-details-hidden" style="display: none;">
+              <p class="cert-description">
+                Fundamentos de seguridad, cumplimiento e identidad en servicios de Microsoft, incluyendo Azure AD,
+                protección de información y gestión de amenazas.
+              </p>
+              <ul class="cert-tags">
                 <li>Security</li>
                 <li>Compliance</li>
                 <li>Identity Management</li>
               </ul>
-              <p class="job-date">Expedición: Abril 2024</p>
+              <p class="cert-date">Expedición: Abril 2024</p>
             </div>
           </div>
 
-          <div class="project-card">
-            <div class="project-content">
+          <!-- Microsoft 365 Certified: Fundamentals -->
+          <div class="cert-card" onclick="openCertModal(this)">
+            <div class="cert-visible">
               <div class="cert-logo">
-                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 23 23">
-                  <path fill="#f25022" d="M0 0h11v11H0z" />
-                  <path fill="#00a4ef" d="M12 0h11v11H12z" />
-                  <path fill="#7fba00" d="M0 12h11v11H0z" />
-                  <path fill="#ffb900" d="M12 12h11v11H12z" />
-                </svg>
+                <img src="microsoft-365-certified-fundamentals.png" alt="Microsoft 365 Certified: Fundamentals">
               </div>
-              <p class="project-overline">Microsoft</p>
-              <h3 class="project-title">Microsoft 365 Certified: Fundamentals</h3>
-              <div class="project-description">
-                <p>
-                  Conocimientos fundamentales sobre servicios de Microsoft 365, incluyendo productividad en la nube,
-                  colaboración y soluciones de seguridad.
-                </p>
-              </div>
-              <ul class="project-tech">
+              <p class="cert-issuer">Microsoft</p>
+              <h3 class="cert-name">Microsoft 365 Certified: Fundamentals</h3>
+            </div>
+            <div class="cert-details-hidden" style="display: none;">
+              <p class="cert-description">
+                Conocimientos fundamentales sobre servicios de Microsoft 365, incluyendo productividad en la nube,
+                colaboración y soluciones de seguridad.
+              </p>
+              <ul class="cert-tags">
                 <li>Microsoft 365</li>
                 <li>Cloud Productivity</li>
                 <li>Collaboration</li>
               </ul>
-              <p class="job-date">Expedición: Marzo 2024</p>
+              <p class="cert-date">Expedición: Marzo 2024</p>
             </div>
           </div>
 
-          <div class="project-card">
-            <div class="project-content">
+          <!-- Azure AI Fundamentals -->
+          <div class="cert-card" onclick="openCertModal(this)">
+            <div class="cert-visible">
               <div class="cert-logo">
-                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 23 23">
-                  <path fill="#f25022" d="M0 0h11v11H0z" />
-                  <path fill="#00a4ef" d="M12 0h11v11H12z" />
-                  <path fill="#7fba00" d="M0 12h11v11H0z" />
-                  <path fill="#ffb900" d="M12 12h11v11H12z" />
-                </svg>
+                <img src="azure-ai-fundamentals.png" alt="Azure AI Fundamentals">
               </div>
-              <p class="project-overline">Microsoft</p>
-              <h3 class="project-title">Azure AI Fundamentals</h3>
-              <div class="project-description">
-                <p>
-                  Fundamentos de inteligencia artificial en Azure, incluyendo conceptos de ML, visión por computadora,
-                  procesamiento de lenguaje natural y IA conversacional.
-                </p>
-              </div>
-              <ul class="project-tech">
+              <p class="cert-issuer">Microsoft</p>
+              <h3 class="cert-name">Azure AI Fundamentals</h3>
+            </div>
+            <div class="cert-details-hidden" style="display: none;">
+              <p class="cert-description">
+                Fundamentos de inteligencia artificial en Azure, incluyendo conceptos de ML, visión por computadora,
+                procesamiento de lenguaje natural y IA conversacional.
+              </p>
+              <ul class="cert-tags">
                 <li>Azure AI</li>
                 <li>AI Fundamentals</li>
                 <li>Cognitive Services</li>
               </ul>
-              <p class="job-date">Expedición: Enero 2024</p>
+              <p class="cert-date">Expedición: Enero 2024</p>
             </div>
           </div>
 
-          <div class="project-card">
-            <div class="project-content">
+          <!-- AWS Certified Cloud Practitioner -->
+          <div class="cert-card" onclick="openCertModal(this)">
+            <div class="cert-visible">
               <div class="cert-logo">
-                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 304 182">
-                  <path fill="#252f3e"
-                    d="M86.4 66.4c0 3.7.4 6.7 1.1 8.9.8 2.2 1.8 4.6 3.2 7.2.5.8.7 1.6.7 2.3 0 1-.6 2-1.9 3l-6.3 4.2c-.9.6-1.8.9-2.6.9-1 0-2-.5-3-1.4-1.4-1.5-2.6-3.1-3.6-4.7-1-1.7-2-3.6-3.1-5.9-7.8 9.2-17.6 13.8-29.4 13.8-8.4 0-15.1-2.4-20-7.2-4.9-4.8-7.4-11.2-7.4-19.2 0-8.5 3-15.4 9.1-20.6s14.2-7.8 24.5-7.8c3.4 0 6.9.3 10.6.8 3.7.5 7.5 1.3 11.5 2.2v-7.3c0-7.6-1.6-12.9-4.7-16-3.2-3.1-8.6-4.6-16.3-4.6-3.5 0-7.1.4-10.8 1.3-3.7.9-7.3 2-10.8 3.4-1.6.7-2.8 1.1-3.5 1.3-.7.2-1.2.3-1.6.3-1.4 0-2.1-1-2.1-3.1v-4.9c0-1.6.2-2.8.7-3.5.5-.7 1.4-1.4 2.8-2.1 3.5-1.8 7.7-3.3 12.6-4.5 4.9-1.3 10.1-1.9 15.6-1.9 11.9 0 20.6 2.7 26.2 8.1 5.5 5.4 8.3 13.6 8.3 24.6v32.4zm-40.6 15.2c3.3 0 6.7-.6 10.3-1.8 3.6-1.2 6.8-3.4 9.5-6.4 1.6-1.9 2.8-4 3.4-6.4.6-2.4 1-5.3 1-8.7v-4.2c-2.9-.7-6-1.3-9.2-1.7-3.2-.4-6.3-.6-9.4-.6-6.7 0-11.6 1.3-14.9 4-3.3 2.7-4.9 6.5-4.9 11.5 0 4.7 1.2 8.2 3.7 10.6 2.4 2.5 5.9 3.7 10.5 3.7zm80.3 10.8c-1.8 0-3-.3-3.8-1-.8-.6-1.5-2-2.1-3.9L96.7 10.2c-.6-2-.9-3.3-.9-4 0-1.6.8-2.5 2.4-2.5h9.8c1.9 0 3.2.3 3.9 1 .8.6 1.4 2 2 3.9l16.8 66.2 15.6-66.2c.5-2 1.1-3.3 1.9-3.9.8-.6 2.2-1 4-1h8c1.9 0 3.2.3 4 1 .8.6 1.5 2 1.9 3.9l15.8 67 17.3-67c.6-2 1.3-3.3 2-3.9.8-.6 2.1-1 3.9-1h9.3c1.6 0 2.5.8 2.5 2.5 0 .5-.1 1-.2 1.6-.1.6-.3 1.4-.7 2.5l-24.1 77.3c-.6 2-1.3 3.3-2.1 3.9-.8.6-2.1 1-3.8 1h-8.6c-1.9 0-3.2-.3-4-1-.8-.7-1.5-2-1.9-4L156 23l-15.4 64.4c-.5 2-1.1 3.3-1.9 4-.8.7-2.2 1-4 1h-8.6zm128.5 2.7c-5.2 0-10.4-.6-15.4-1.8-5-1.2-8.9-2.5-11.5-4-1.6-.9-2.7-1.9-3.1-2.8-.4-.9-.6-1.9-.6-2.8v-5.1c0-2.1.8-3.1 2.3-3.1.6 0 1.2.1 1.8.3.6.2 1.5.6 2.5 1 3.4 1.5 7.1 2.7 11 3.5 4 .8 7.9 1.2 11.9 1.2 6.3 0 11.2-1.1 14.6-3.3 3.4-2.2 5.2-5.4 5.2-9.5 0-2.8-.9-5.1-2.7-7-1.8-1.9-5.2-3.6-10.1-5.2L246 52c-7.3-2.3-12.7-5.7-16-10.2-3.3-4.4-5-9.3-5-14.5 0-4.2.9-7.9 2.7-11.1 1.8-3.2 4.2-6 7.2-8.2 3-2.3 6.4-4 10.4-5.2 4-1.2 8.2-1.7 12.6-1.7 2.2 0 4.5.1 6.7.4 2.3.3 4.4.7 6.5 1.1 2 .5 3.9 1 5.7 1.6 1.8.6 3.2 1.2 4.2 1.8 1.4.8 2.4 1.6 3 2.5.6.8.9 1.9.9 3.3v4.7c0 2.1-.8 3.2-2.3 3.2-.8 0-2.1-.4-3.8-1.2-5.7-2.6-12.1-3.9-19.2-3.9-5.7 0-10.2.9-13.3 2.8-3.1 1.9-4.7 4.8-4.7 8.9 0 2.8 1 5.2 3 7.1 2 1.9 5.7 3.8 11 5.5l14.2 4.5c7.2 2.3 12.4 5.5 15.5 9.6 3.1 4.1 4.6 8.8 4.6 14 0 4.3-.9 8.2-2.6 11.6-1.8 3.4-4.2 6.4-7.3 8.8-3.1 2.5-6.8 4.3-11.1 5.6-4.5 1.4-9.2 2.1-14.3 2.1z" />
-                  <path fill="#ff9900"
-                    d="M273.5 143.7c-32.9 24.3-80.7 37.2-121.8 37.2-57.6 0-109.5-21.3-148.7-56.7-3.1-2.8-.3-6.6 3.4-4.4 42.4 24.6 94.7 39.5 148.8 39.5 36.5 0 76.6-7.6 113.5-23.2 5.5-2.5 10.2 3.6 4.8 7.6z" />
-                  <path fill="#ff9900"
-                    d="M287.2 128.1c-4.2-5.4-27.8-2.6-38.5-1.3-3.2.4-3.7-2.4-.8-4.5 18.8-13.2 49.7-9.4 53.3-5 3.6 4.5-1 35.4-18.6 50.2-2.7 2.3-5.3 1.1-4.1-1.9 4-9.9 12.9-32.2 8.7-37.5z" />
-                </svg>
+                <img src="aws-certified-cloud-practitioner.png" alt="AWS Certified Cloud Practitioner">
               </div>
-              <p class="project-overline">Amazon Web Services</p>
-              <h3 class="project-title">AWS Certified Cloud Practitioner</h3>
-              <div class="project-description">
-                <p>
-                  Certificación fundamental de AWS que valida conocimientos sobre servicios de nube, arquitectura,
-                  seguridad y precios de AWS.
-                </p>
-              </div>
-              <ul class="project-tech">
+              <p class="cert-issuer">Amazon Web Services</p>
+              <h3 class="cert-name">AWS Certified Cloud Practitioner</h3>
+            </div>
+            <div class="cert-details-hidden" style="display: none;">
+              <p class="cert-description">
+                Certificación fundamental de AWS que valida conocimientos sobre servicios de nube, arquitectura,
+                seguridad y precios de AWS.
+              </p>
+              <ul class="cert-tags">
                 <li>AWS</li>
                 <li>Cloud Computing</li>
                 <li>Cloud Architecture</li>
               </ul>
-              <p class="job-date">Expedición: Diciembre 2022</p>
+              <p class="cert-date">Expedición: Diciembre 2022</p>
             </div>
           </div>
+
         </div>
       </section>
 
@@ -629,6 +551,26 @@
     <!-- End Right Column -->
   </div>
   <!-- End Container -->
+
+
+  <!-- Certification Modal -->
+  <div id="cert-modal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn" onclick="closeCertModal()">&times;</span>
+      <div class="modal-header">
+        <div class="modal-logo" id="modal-logo"></div>
+        <div class="modal-title-group">
+          <p class="modal-issuer" id="modal-issuer"></p>
+          <h3 class="modal-title" id="modal-title"></h3>
+        </div>
+      </div>
+      <div class="modal-body">
+        <p class="modal-description" id="modal-description"></p>
+        <ul class="modal-tags" id="modal-tags"></ul>
+        <p class="modal-date" id="modal-date"></p>
+      </div>
+    </div>
+  </div>
 
   <script src="script.js"></script>
 </body>

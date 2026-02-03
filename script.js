@@ -203,3 +203,64 @@ console.log('%c¡Hola! 👋', 'color: #64ffda; font-size: 24px; font-weight: bol
 console.log('%c¿Buscando algo interesante?', 'color: #8892b0; font-size: 16px;');
 console.log('%cEste portfolio fue construido con HTML, CSS y JavaScript vanilla.', 'color: #8892b0; font-size: 14px;');
 console.log('%c¡Contáctame si quieres colaborar!', 'color: #64ffda; font-size: 14px; font-weight: bold;');
+
+// ===================================
+// Certification Modal Logic
+// ===================================
+const certModal = document.getElementById('cert-modal');
+
+function openCertModal(card) {
+    // Get data from the clicked card
+    const logoSrc = card.querySelector('.cert-visible .cert-logo img').src;
+    const logoAlt = card.querySelector('.cert-visible .cert-logo img').alt;
+    const issuer = card.querySelector('.cert-visible .cert-issuer').textContent;
+    const title = card.querySelector('.cert-visible .cert-name').textContent;
+    
+    // Get hidden details
+    const description = card.querySelector('.cert-details-hidden .cert-description').textContent;
+    const tags = card.querySelector('.cert-details-hidden .cert-tags').innerHTML; // Get innerHTML to preserve <li> structure
+    const date = card.querySelector('.cert-details-hidden .cert-date').textContent;
+    
+    // Populate Modal
+    document.getElementById('modal-logo').innerHTML = `<img src="${logoSrc}" alt="${logoAlt}">`;
+    document.getElementById('modal-issuer').textContent = issuer;
+    document.getElementById('modal-title').textContent = title;
+    document.getElementById('modal-description').textContent = description.trim();
+    document.getElementById('modal-tags').innerHTML = tags;
+    document.getElementById('modal-date').textContent = date;
+    
+    // Show Modal
+    certModal.style.display = 'flex';
+    // Small delay to allow display:flex to apply before adding show class for transition
+    setTimeout(() => {
+        certModal.classList.add('show');
+    }, 10);
+    
+    // Prevent body scrolling
+    document.body.style.overflow = 'hidden';
+}
+
+function closeCertModal() {
+    certModal.classList.remove('show');
+    
+    // Wait for transition to finish before hiding
+    setTimeout(() => {
+        certModal.style.display = 'none';
+        // Clear content logic optional, but good practice
+        document.body.style.overflow = 'auto'; // Restore scrolling
+    }, 300);
+}
+
+// Close modal when clicking outside
+window.addEventListener('click', (event) => {
+    if (event.target === certModal) {
+        closeCertModal();
+    }
+});
+
+// Close modal with Escape key
+document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && certModal.classList.contains('show')) {
+        closeCertModal();
+    }
+});
