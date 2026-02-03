@@ -1254,3 +1254,199 @@ body.mouse-moved::before {
     margin-top: 5px;
     font-weight: 400;
 }
+
+/* ===================================
+   Webinar Horizontal List (Refactored)
+   =================================== */
+.webinar-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    /* Removed gap to make them look like a table/list */
+}
+
+.webinar-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 25px;
+    background-color: transparent;
+    text-decoration: none;
+    transition: var(--transition);
+    border-bottom: 1px solid var(--lightest-navy);
+}
+
+.webinar-row:first-child {
+    border-top: 1px solid var(--lightest-navy);
+}
+
+.webinar-row:hover {
+    background-color: var(--light-navy);
+    /* Subtle background change */
+    transform: translateX(5px);
+    /* Keep the slight movement for feedback */
+}
+
+.webinar-content-group {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex: 1;
+    flex-wrap: wrap;
+    /* Allow wrapping on small screens */
+}
+
+.webinar-title {
+    color: var(--lightest-slate);
+    font-size: 15px;
+    font-weight: 500;
+    margin: 0;
+    min-width: 280px;
+    /* Ensure title aligns well */
+    transition: var(--transition);
+}
+
+.webinar-row:hover .webinar-title {
+    color: var(--green);
+}
+
+.webinar-tech-badges {
+    display: flex;
+    gap: 8px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.webinar-tech-badge {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--green);
+    border: 1px solid var(--green);
+    padding: 2px 8px;
+    border-radius: 4px;
+    background-color: rgba(100, 255, 218, 0.05);
+}
+
+.webinar-meta-group {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-left: auto;
+    /* Push to right */
+}
+
+.webinar-instructor {
+    color: var(--slate);
+    font-size: 12px;
+    font-family: var(--font-mono);
+    white-space: nowrap;
+}
+
+.webinar-icon {
+    color: var(--slate);
+    transition: var(--transition);
+}
+
+.webinar-row:hover .webinar-icon {
+    color: var(--green);
+    transform: translateX(3px);
+}
+
+/* Compact Disclaimer */
+.disclaimer-compact {
+    border-left: 3px solid #06b6d4;
+    /* Cyan color as requested */
+    background-color: rgba(6, 182, 212, 0.05);
+    /* Very subtle background tint match */
+    padding: 15px 20px;
+    margin-bottom: 30px;
+    border-radius: 0 4px 4px 0;
+}
+
+.disclaimer-compact .disclaimer-title {
+    color: #06b6d4;
+    font-size: 12px;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.disclaimer-compact .disclaimer-text {
+    font-size: 13px;
+    font-style: normal;
+    color: var(--slate);
+    opacity: 0.9;
+}
+
+@media (max-width: 768px) {
+    .webinar-content-group {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .webinar-meta-group {
+        margin-left: 0;
+        width: 100%;
+        justify-content: space-between;
+        margin-top: 10px;
+    }
+}
+
+.webinar-short-desc {
+    color: var(--slate);
+    font-size: 13px;
+    margin: 0;
+    font-weight: 400;
+    opacity: 0.8;
+}
+
+@media (max-width: 768px) {
+    .webinar-short-desc {
+        width: 100%;
+        display: block;
+        margin-top: 5px;
+    }
+}
+
+.card-logos {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 15px;
+    position: relative;
+    /* Context for the background */
+    width: fit-content;
+    /* Ensure it wraps the logo */
+}
+
+/* NASA Background style */
+.nasa-bg::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 180%;
+    /* Larger than the logo */
+    height: 180%;
+    background-image: url('nasa-logo.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    opacity: 0.15;
+    filter: blur(2px) grayscale(20%);
+    /* Subtle blur and slight color */
+    z-index: 0;
+    pointer-events: none;
+}
+
+.project-card-logo {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    border-radius: 4px;
+    position: relative;
+    z-index: 1;
+    /* Ensure logo sits on top */
+}
