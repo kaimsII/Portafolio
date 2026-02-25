@@ -84,20 +84,24 @@ body.mouse-moved::before {
    Skip to Content (Accessibility)
    =================================== */
 .skip-to-content {
+    /* Keep available to assistive tech but hide visually to avoid the top green bar */
     position: absolute;
-    top: -40px;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
+
+/* If you want to show the link on focus for keyboard users, uncomment the block below
+.skip-to-content:focus {
     left: 0;
+    top: 0;
     background: var(--green);
     color: var(--navy);
     padding: 8px;
-    text-decoration: none;
     z-index: 100;
-    font-weight: 600;
 }
-
-.skip-to-content:focus {
-    top: 0;
-}
+*/
 
 /* ===================================
    Two-Column Layout Container
